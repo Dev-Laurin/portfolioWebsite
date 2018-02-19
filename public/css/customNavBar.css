@@ -1,0 +1,39 @@
+/* Custom Navigation Bar CSS */
+/* customNavBar.css */ 
+
+/* Pink Navigation Bar */
+.navbar-custom{
+	background-color: #ff1493;  
+}
+
+/* TITLE OF WEBSITE */ 
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text,
+.navbar-custom .dropdown-toggle{
+    color: #FFFFFF;/* #DCDCDC; /* rgba(255,255,255,.8); */
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link .navbar-right {
+    color: #008000; /*rgba(255,255,255,.5);*/ 
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link,
+.navbar-custom .nav-item .nav-link:focus,
+.navbar-custom .dropdown.active .dropdown-toggle,
+.navbar-custom .dropdown:hover .dropdown-toggle,
+.navbar-custom .dropdown .dropdown-toggle:focus{
+    color: #000000; /* #ff1493;*/
+}
+
+/* change the color of inactive or hovered links */
+.navbar-custom .nav-item .nav-link{
+    color: #FFFFFF;
+}
+
+/* Hover box 
+.navbar-nav > li > a:hover, .navbar-nav > li > a:focus{
+	background-color: #ff1493; /* #7B68EE; 
+	color: #ff1493; /* #7B68EE;  
+} */

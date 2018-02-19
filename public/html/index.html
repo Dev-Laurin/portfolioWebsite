@@ -1,0 +1,52 @@
+<html ng-app="app">
+	<head>
+		<title>Laurin's Metadata</title>
+
+    <!-- LINKS --> 
+      <!-- Bootstrap & FontAwesome --> 
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.css"> 
+    <link rel="stylesheet" href="../css/customNavBar.css"/>
+    <link rel="stylesheet" href="../css/homePage.css"/>
+
+    <!-- SCRIPTS --> 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.js">
+		</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.min.js"></script>
+		<script src="../js/app.js"></script>
+	</head>
+
+  <!-- Main Controller = Header Bar for all pages --> 
+	<body ng-controller="mainController">
+    <header> 
+      <nav class="navbar navbar-custom">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/">Laurin's Metadata</a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-home"></i>Home</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-folder-open-o"></i>Projects
+              <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Project1</a></li>
+                <li><a href="#">Project2</a></li>
+              </ul>
+            </li>
+                
+            <li class="nav-item"><a class="nav-link" href="#!about"><i class="fa fa-shield"></i>About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#!contact"><i class="fa fa-comment"></i>Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header> 
+
+    <div id="main">
+      <div ng-view></div>
+    </div>
+	</body>
+</html> 

@@ -1,0 +1,14 @@
+Website Design Ideas
+
+Laurin's Metadata
+
+-def of metadata (family)
+-3 types of metadata
+	-Descriptive metadata
+Descriptive metadata describes a resource for purposes such as discovery and identification. It can include elements such as title, abstract, author, and keywords.
+	-Structural metadata
+Structural metadata is metadata about containers of data and indicates how compound objects are put together, for example, how pages are ordered to form chapters. It describes the types, versions, relationships and other characteristics of digital materials. [3]		
+	-Administrative metadata 
+Administrative metadata provides information to help manage a resource, such as when and how it was created, file type and other technical information, and who can access it.[4]
+
+(Wikipedia)

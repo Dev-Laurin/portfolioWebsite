@@ -1,0 +1,18 @@
+{
+  "name": "",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "angular-font-awesome": "^2.3.7",
+    "express": "^4.16.2",
+    "font-awesome": "^4.7.0",
+    "mongoose": "^4.13.11"
+  },
+  "scripts": {
+    "prestart": "mongod --config /usr/local/etc/mongod.conf &",
+    "start": "node server.js"
+  },
+  "author": "Laurin",
+  "license": ""
+}
