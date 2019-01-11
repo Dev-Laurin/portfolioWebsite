@@ -7,3 +7,9 @@ body {
 main {
 	flex: 1 0 auto;
 }
+
+img {
+	border-width: 2px;
+	border-style: solid;
+	border-color: #f5f5f5;
+}

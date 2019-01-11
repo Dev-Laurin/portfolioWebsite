@@ -7,6 +7,8 @@
 	<link type="text/css" rel="stylesheet" href="../static/css/main.css"/> 
 	<!-- Include Font Awesome Stylesheet --> 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<!-- Loading Bar IO library --> 
+	<link rel="stylesheet" type="text/css" href="../static/loading-bar/loading-bar.css"/> 
 	<!-- Tell browser we are optimized for mobile --> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
 </head>
@@ -26,7 +28,49 @@
   </header>
 
   <main role="main"> 
-  	"Main Page"
+    <br> 
+    <div> 
+	  	<div class="row"> 
+	  		<div class="col s6">
+	  			<img class="responsive-img z-depth-3" src="../static/images/laurin_boston.jpg">
+	  		</div>
+	  		<div class="col s6"> 
+					Laurin (Lah-Ren): A detail-oriented, experience-hungry, positive, software developer with many interests. 
+					<br><br> 
+					<i>from the Laurin-ary Copyright 2019. All rights reserved.</i>
+					<div class="divider"></div>
+					
+					<h3> Skills </h3>
+					</div>
+	  		</div>  
+
+	  		<!-- Here for custom loading - even custom svg images! https://loading.io/progress/ --> 
+	  		<div class="row"> 
+					<div class="col s2 ldBar label-center" data-value="80" data-preset="bubble"></div>
+
+					<div class="col s2 ldBar label-center" data-type="fill" data-path="M90.5,23.2c0-12.5-10.2-22.7-22.7-22.7 c-13.6,0-20.9,8.6-22.3,13.8C44.3,8.9, 35.1,0.5,23.2,0.5C10.7,0.5,0.5,10.7, 0.5,23.2c0,22.2,36.5,45.3,45,55.9 C53.5,67.3,90.5,46.3,90.5,23.2z" data-stroke="red" data-value="75">
+					</div>
+
+					<div class="col s2 ldBar label-center" data-type="stroke" data-value="60" data-path="M90.5,23.2c0-12.5-10.2-22.7-22.7-22.7 c-13.6,0-20.9,8.6-22.3,13.8C44.3,8.9, 35.1,0.5,23.2,0.5C10.7,0.5,0.5,10.7, 0.5,23.2c0,22.2,36.5,45.3,45,55.9 C53.5,67.3,90.5,46.3,90.5,23.2z" data-stroke="red" data-stroke-width="20"></div>
+
+					<div class="col 2 ldBar label-center" data-type="stroke" data-stroke="red" data-path="M90.5,23.2c0-12.5-10.2-22.7-22.7-22.7 c-13.6,0-20.9,8.6-22.3,13.8C44.3,8.9, 35.1,0.5,23.2,0.5C10.7,0.5,0.5,10.7, 0.5,23.2c0,22.2,36.5,45.3,45,55.9 C53.5,67.3,90.5,46.3,90.5,23.2z" data-stroke-trail="gray" data-stroke-trail-width="10" data-value="40"></div>
+
+					<div class="col s2 ldBar auto" data-value="80" data-preset="stripe"></div>
+
+					<div class="col s2 ldBar auto" data-value="80" data-preset="energy"></div>
+
+					<div class="col s2 ldBar" data-stroke="data:ldbar/res,stripe(#ff9,#fc9,1)" data-value="40" ></div>
+
+					
+				</div>
+
+				<div class="row"> 
+					<div class="col s2 ldBar label-center" data-type="stroke" data-path="m 568.57143,566.64792 c -17.14286,-42.85714 -51.42857,-80 -51.42857,-80 C 320,260.93363 194.28571,489.50506 194.28571,489.50506 77.142857,478.07649 74.285714,595.21935 74.285714,595.21935 c 0,0 25.714286,31.42857 62.857146,31.42857 0,0 51.42857,100 120,0 l 177.14285,0 c 0,0 62.85715,102.85714 114.28572,-2.85714 0,0 54.28572,14.28571 20,-57.14286 z" data-value="60" data-stroke="red" ></div>
+
+					<div class="col s2 ldBar label-center" data-type="fill" data-img="../static/images/vw_bug_color.svg" data-value="50" width="200" style="width: 200;" ></div>
+				</div> 
+	  	</div>
+	  </div>
   </main>
  	
   <!-- Footer --> 
@@ -56,6 +100,7 @@
 
 	<!-- Include Javascript from libraries --> 
 	<script type="text/javascript" src="../static/materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="../static/loading-bar/loading-bar.js"></script> 
 </body>
 
 </html>
