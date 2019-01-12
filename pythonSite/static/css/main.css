@@ -13,3 +13,21 @@ img {
 	border-style: solid;
 	border-color: #f5f5f5;
 }
+
+.loading-images {
+	width: 40px !important;
+	height: 100px !important;
+}
+
+.flex-parent {
+	display: flex;
+	align-items: center;
+}
+
+.flex-item {
+	margin: 10px;
+}
+
+.disabled-link-text {
+	color: grey !important;
+}
