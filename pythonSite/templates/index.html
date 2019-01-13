@@ -41,29 +41,36 @@
 					<div class="divider"></div>
 					
 					<h3> Skills </h3>
-					<div class="col s6"> 
+					<div class="col m6"> 
 						<h4> Frontend </h4>
 						<div class="divider"></div>
 						<h5>"Languages"</h5>
 						<div class=" flex-parent">
-							<div class="flex-item ldBar label-center" data-value="80" style="width: 190px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#e80a89, #000)">
+							<div class="flex-item-left ldBar label-center" data-value="80" style="width: 163px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#e80a89, #000)">
 							</div>
 							<div class="flex-item">
-								Javascript
+								<a class="tooltipped" data-position="bottom" data-tooltip="Working on wrapping my head around functional programming (currying) and javascript classes.">Javascript</a>
 							</div> 
 						</div>
 						<div class="flex-parent">
-							<div class="flex-item ldBar label-center" data-value="95" style="width: 190px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#4CAF50, #006400)">
+							<div class="flex-item-left ldBar label-center" data-value="95" style="width: 163px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#4CAF50, #006400)">
 							</div>
 							<div class="flex-item">
-								HTML
+								<a class="tooltipped" data-position="bottom" data-tooltip="Still need to learn some new HTML5 speciality tags and attributes.">HTML</a>
 							</div> 
 						</div>
 						<div class="flex-parent">
-							<div class="flex-item ldBar label-center" data-value="60" style="width: 190px; height: 30px;" data-preset="stripe">
+							<div class="flex-item-left ldBar label-center" data-value="60" style="width: 163px; height: 30px;" data-preset="stripe">
 							</div>
 							<div class="flex-item">
-								CSS
+								<a class="tooltipped" data-position="bottom" data-tooltip="Have concepts down, but still lose battles.">CSS</a>
+							</div> 
+						</div>
+						<div class="flex-parent">
+							<div class="ldBar label-center" data-value="40" style="width: 163px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#ffff00, #cccc00)">
+							</div>
+							<div style="margin-left: 5px;" >
+								<a class="modal-trigger" href="#gasModal">Google App Script</a>
 							</div> 
 						</div>
 
@@ -72,7 +79,7 @@
 							<div class="flex-item ldBar label-center loading-images" data-value="75" data-type="fill" data-path="m 158.30303,967.54875 c 0,39.59355 -33.77827,71.69045 -75.445863,71.69045 -41.667606,0 -75.4458706,-32.0969 -75.4458706,-71.69045 0,-39.59355 75.4458706,-134.41959 75.4458706,-134.41959 0,0 75.445863,94.82605 75.445863,134.41959 z" data-fill="data:ldbar/res,bubble(#30badc,#fff,20,1)" >
 							</div>
 							<div class="flex-item">
-								<a class="modal-trigger" href="#modal1">Drupal 8</a>
+								<a class="modal-trigger" href="#drupalModal">Drupal 8</a>
 							</div>
 						</div>
 						<div class="row flex-parent"> 
@@ -84,6 +91,8 @@
 						</div>
 							
 						<div>
+						jQuery
+						SASS
 							Twig
 						Google App Script
 						PHP
@@ -97,8 +106,15 @@
 						</div>
 					</div>
 
-					<div class="col s6"> 
+					<div class="col m6"> 
 						<h4> Backend </h4>
+						<div class="row flex-parent">
+							<div class="flex-item ldBar label-center" data-value="60" style="width: 120px; height: 30px;" data-preset="line" data-stroke="#ffff00">
+							</div>
+							<div class="flex-item">
+								Google App Script
+							</div> 
+						</div>
 						
 						Javascript
 						Python
@@ -177,8 +193,25 @@
 	</footer>
 
 	<!-- Modals --> 
-	<!-- Modal Structure -->
-  <div id="modal1" class="modal">
+	<!-- Drupal Modal -->
+  <div id="#drupalModal" class="modal">
+    <div class="modal-content">
+      <h4>Drupal 8 Proficiency</h4>
+      <p>I've made small custom modules, worked with twig templates, and have experience managing content through Drupal's interfaces.</p>
+      <p><b>Projects</b>
+      	<div class="collection">
+      		<a class="collection-item disabled-link-text" href="#">WATC - Coming Soon</a>
+      		<a class="collection-item" href="https://www.gi.alaska.edu/">Geophysical Institute, University of Alaska Fairbanks</a>
+
+      	</div>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+  <!-- Google app script modal --> 
+  <div id="gasModal" class="modal">
     <div class="modal-content">
       <h4>Drupal 8 Proficiency</h4>
       <p>I've made small custom modules, worked with twig templates, and have experience managing content through Drupal's interfaces.</p>

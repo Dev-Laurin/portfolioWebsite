@@ -25,7 +25,14 @@ img {
 }
 
 .flex-item {
-	margin: 10px;
+	/*margin: 5px;*/
+}
+
+/* The left item will align left but have a rightward margin. */
+.flex-item-left {
+	margin-right: 5px;
+	margin-bottom: 5px; 
+	margin-top: 5px;
 }
 
 .disabled-link-text {
