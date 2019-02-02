@@ -38,3 +38,22 @@ img {
 .disabled-link-text {
 	color: grey !important;
 }
+
+/* Timeline */ 
+.timeline {
+	max-width: 60% !important;
+}
+
+.timeline .event::before {
+	left: -150px !important;
+	top: 40px !important;
+}
+
+.date {
+	position: absolute;
+	display: block;
+	left: -90px !important;
+	top: 40px !important;
+	word-wrap: normal;
+	max-width: 30%;
+}
