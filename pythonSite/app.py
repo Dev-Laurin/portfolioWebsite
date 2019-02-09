@@ -11,3 +11,16 @@ def hello(name=None):
 @app.route("/about")
 def about(name=None): 
 	return render_template('about.html', name=name)
+
+# @app.route("/world-110m.json")
+# def worldjson(name=None):
+# 	return app.send_static_file('/static/js/world-110m.json')
+
+from flask import send_from_directory
+import os
+
+@app.route('/js/world-110m.json')
+def worldjson():
+	filename = 'world-110m.json'
+	root_dir = os.path.dirname(os.getcwd())
+	return send_from_directory(os.path.join(root_dir, 'static', 'js'), filename)
