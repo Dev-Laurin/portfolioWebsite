@@ -18,27 +18,32 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 </head>
 <body>
-  <header>
+	<header>
   	<!-- Navigation Bar --> 
 		<nav>
 			<div class="nav-wrapper">
-			  <a href="/" class="brand-logo">Laurin's Metadata</a>
+			<center> 
+			  <a href="/" style="font-size: 24px;">Laurin's Metadata</a>
+			 </center>
+			  <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+			  </ul>
 			</div>
 		</nav> 
-  </header>
+  </header> 
 
   <main role="main"> 
     <br> 
     <div> 
 	  	<div class="row"> 
-	  		<div class="col s4">
+	  		<div class="col l4 m3 s12">
 	  			<img class="responsive-img z-depth-3" src="../static/images/laurin_boston.jpg">
-	  			<h3>Education</h3>
 	  			<div class="row">
 				    <div class="col s12">
+				      <h5 class="word-break">Education</h5>
 				      <div class="card blue-grey darken-1">
 				        <div class="card-content white-text">
-				          <span class="card-title">MS/BS Computer Science</span>
+				          <span class="card-title word-break" >MS/BS Computer Science</span>
 				          <p>University of Alaska Fairbanks</p>
 				          <p>Fall 2013 - Fall 2018</p>
 				          <p>Grad GPA 3.93</p>
@@ -58,11 +63,13 @@
 				    </div>
 				  </div>
 	  		</div>
-	  		<div class="col s8"> 
+	  		<div class="col l8 m9 s12"> 
+	  			<center> 
 					Laurin (Lah-Ren): A detail-oriented, experience-hungry, positive software developer with many interests. 
 					<br><br> 
 					<i>from the Laurin-ary Copyright 2019. All rights reserved.</i>
 					<div class="divider"></div>
+				</center>
 					
 					<h3> Skills </h3>
 					<div class="col m6"> 
@@ -100,16 +107,16 @@
 
 						<h5> Frameworks </h5>
 						<div class="row"> 
-							<div class="col s6">
+							<div class="col l6 s12">
 								<div class="flex-parent"> 
-									<div class="flex-item-left ldBar label-center loading-images" data-value="75" data-type="fill" data-path="m 158.30303,967.54875 c 0,39.59355 -33.77827,71.69045 -75.445863,71.69045 -41.667606,0 -75.4458706,-32.0969 -75.4458706,-71.69045 0,-39.59355 75.4458706,-134.41959 75.4458706,-134.41959 0,0 75.445863,94.82605 75.445863,134.41959 z" data-fill="data:ldbar/res,bubble(#30badc,#fff,20,1)" >
+									<div class="flex-item-left ldBar label-center loading-images" data-value="75" data-type="fill" data-path="m 158.30303,967.54875 c 0,39.59355 -33.77827,71.69045 -75.445863,71.69045 -41.667606,0 -75.4458706,-32.0969 -75.4458706,-71.69045 0,-39.59355 75.4458706,-134.41959 75.4458706,-134.41959 0,0 75.445863,94.82605 75.445863,134.41959 z" data-fill="data:ldbar/res,bubble(#30badc,#fff,20,1)" data-img-size="50,50" >
 									</div>
 									<div>
 										<a class="modal-trigger" href="#drupalModal">Drupal 8</a>
 									</div>
 								</div>
 							</div> 
-							<div class="col s6"> 					
+							<div class="col l6 s12"> 					
 								<div class="flex-parent"> 
 									<div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/jquery.svg" data-value="50" data-img-size="50,50" ></div>
 									<div>jQuery</div>
@@ -117,13 +124,13 @@
 							</div> 
 						</div> 
 						<div class="row">
-							<div class="col s6"> 
+							<div class="col l6 s12"> 
 								<div class="flex-parent"> 
 									<div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/sass.svg" data-value="50" data-img-size="50,50" ></div>
 									<div>SASS</div>
 								</div>
 							</div> 
-							<div class="col s6"> 
+							<div class="col l6 s12"> 
 								<div class="flex-parent"> 
 									<div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/flask.svg" data-value="50" data-img-size="50,50" ></div>
 									<div>Flask</div>
@@ -132,24 +139,19 @@
 						</div> 
 
 						<div class="row"> 
-							<div class="col s6"> 
+							<div class="col l6 s12"> 
 								<div class="flex-parent"> 
 									<div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/bootstrap.svg" data-value="50" data-img-size="50,50" ></div>
 									<div>Bootstrap</div>
 								</div>
 							</div> 
-							<div class="col s6"> 	
+							<div class="col l6 s12"> 	
 								<div class="flex-parent"> 
 									<div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/materialize.svg" data-value="50" data-img-size="50,50" ></div>
 									<div>Materialize CSS</div>
 								</div>
 							</div> 
 						</div> 
-
-						<h5>Templating</h5>
-						Twig
-						Jinja2
-						Angular
 					</div>
 
 					<div class="col m6"> 
@@ -225,8 +227,10 @@
 				</div>
 	  	</div>  
 
+
   		<div class="row">
   			<div class="col s12 l6">
+  				<center> 
   				<h3>Work History</h3> 
   				<div id="content">
 					  <ul class="timeline">
@@ -281,11 +285,13 @@
 					    </li>
 					  </ul>
 					</div>
+				</center>
   			</div> 
   			<div class="col s12 l6">
+  				<center> 
   				<h3>Projects</h3> 
 				  <div class="row">
-				    <div class="col s12 m7">
+				    <div class="col s12 m6">
 				      <div class="card">
 				        <div class="card-image">
 				          <img src="../static/images/portfolioImages/winterberry_map.png">
@@ -302,7 +308,7 @@
 				  </div>
           
           <div class="row">
-				    <div class="col s12 m7">
+				    <div class="col s12 m6">
 				      <div class="card">
 				        <div class="card-image">
 				          <img src="../static/images/portfolioImages/IMG-3515.PNG">
@@ -319,7 +325,7 @@
 				  </div>
 
 				  <div class="row">
-				    <div class="col s12 m7">
+				    <div class="col s12 m6">
 				      <div class="card">
 				        <div class="card-image">
 				          <img src="../static/images/portfolioImages/geophysical.png">
@@ -336,7 +342,7 @@
 				  </div>
 
 				  <div class="row">
-				    <div class="col s12 m7">
+				    <div class="col s12 m6">
 				      <div class="card">
 				        <div class="card-content">
 				          <p>Programmed Workplace Timeclock - VBA</p>
@@ -347,6 +353,7 @@
 				      </div>
 				    </div>
 				  </div>
+				</center>
   			</div>
   		</div> 
 				</div>

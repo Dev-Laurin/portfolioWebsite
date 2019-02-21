@@ -16,7 +16,7 @@ img {
 
 .loading-images {
 	width: 40px !important;
-	height: 100px !important;
+	height: 59px !important;
 }
 
 .flex-parent {
@@ -50,10 +50,14 @@ img {
 }
 
 .date {
-	position: absolute;
+	/*position: absolute;*/
 	display: block;
 	left: -90px !important;
 	top: 40px !important;
 	word-wrap: normal;
 	max-width: 30%;
+}
+
+.word-break {
+	word-wrap: break-word;
 }
