@@ -12,6 +12,11 @@ def hello(name=None):
 def about(name=None): 
 	return render_template('about.html', name=name)
 
+@app.route("/projects")
+def projects(name=None): 
+	return render_template('projects.html', name=name)
+
+
 from flask import send_from_directory
 import os
 
