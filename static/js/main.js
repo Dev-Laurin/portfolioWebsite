@@ -1,13 +1,19 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
+  //Tooltips
 	var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems, {});
+  var instances = M.Tooltip.init(elems, {});
 
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, {
-   		'onOpenEnd': initCarouselModal
-   });
+  //Modal
+  var elems = document.querySelectorAll('.modal');
+  var instances = M.Modal.init(elems, {
+ 		'onOpenEnd': initCarouselModal
+  });
+
+  //Date Picker
+  var elems = document.querySelectorAll('.datepicker');
+  var instances = M.Datepicker.init(elems, {});
 
   function initCarouselModal() {
     var elems = document.querySelectorAll('.carousel');

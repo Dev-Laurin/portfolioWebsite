@@ -11,8 +11,33 @@
       Recently Completed
     </div> 
   </div>
-  <div class="row"> 
-  All sorted by most current at top 
+    {% set index = namespace(foo=0) %}
+    {% set rows = (data|length)//3 + 1 %}
+    {% for row in range(rows) %} 
+    <div class="row">
+    {% for i in range(3) %} 
+      {% if data[index.foo] %}
+      <div class="col s12 m4 l4"> 
+        <!-- title, body, start date, end date, desc--> 
+        <div class="card">
+          <div class="card-image">
+            <img src="../static/images/portfolioImages/winterberry_map.png">
+          </div>
+          <div class="card-content">
+            <span class="card-title">{{ data[index.foo].title }}</span>
+            <p>{{data[index.foo].start_date}} - {{data[index.foo].end_date}}</p> 
+            <p>{{data[index.foo].description}}</p>
+          </div>
+          <div class="card-action">
+            <a class="modal-trigger" href="#">Read More</a>
+          </div>
+        </div>
+      </div> 
+      {% set index.foo = index.foo + 1 %}
+      {% endif %}
+    {% endfor %}
+    </div>
+    {% endfor %}
   </div>
   
 {% endblock %}

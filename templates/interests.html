@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <!-- Facebook plugin recommended after first body tag --> 
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  <!-- Content --> 
+  <div class="row">
+    <div class="col m8 s12"> 
+      <canvas id='globe' style='width: 100%; height: 400px; cursor: move;'></canvas>
+Test
+    </div> 
+    <div class="col m4 s12"> 
+      <div style="width: 100%;" class="fb-page" 
+      data-tabs="events"
+      data-href="https://www.facebook.com/akdevalliance"
+      data-width="500">
+      </div>
+      <div> 
+        <iframe src="https://astromech.net/forums/forum.php">R2 Builders Club</iframe>
+      </div>
+    </div>
+
+  </div>
+  
+{% endblock %}
