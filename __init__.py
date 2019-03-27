@@ -1,9 +1,14 @@
-from flask import Flask, render_template, json
+from flask import Flask, render_template, json, request, redirect
+from werkzeug.utils import secure_filename
 from flaskext.mysql import MySQL 
+from datetime import datetime
+
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 #Flask config
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['UPLOAD_FOLDER'] = "static/images/projects/"
 
 #MySQL config
 mysql = MySQL()
@@ -16,6 +21,11 @@ mysql.init_app(app)
 #MySQL connection 
 conn = mysql.connect()
 cursor = conn.cursor()
+
+#Functions
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #Routing
 @app.route("/")
@@ -56,6 +66,50 @@ def interests(name=None):
 #POST requests 
 @app.route("/makeProject", methods=["GET", "POST"])
 def project(name=None): 
+	print("here")
+	if request.method == "POST": 
+		print("post method")
+		#Get form data 
+		title = request.form.get('title', False) 
+		desc = request.form.get('shortDescription', False)
+		sDate = request.form.get('startDate', False) 
+		eDate = request.form.get('endDate', False)
+
+		#convert dates to mysql compatible format 
+		sDate = datetime.strptime(sDate, '%b %d, %Y').strftime('%Y-%m-%d')
+		eDate = datetime.strptime(eDate, '%b %d, %Y').strftime('%Y-%m-%d')
+
+		print(request.form)
+
+		print(title)
+		print(desc)
+		print(sDate)
+		print(eDate)
+
+		print("Got stuff, moving to image")
+
+		#get image for project & upload it
+		if 'file' not in request.files:
+			print("file not in req.files")
+			return redirect(request.url)
+
+		file = request.files['file']
+		print(file)
+
+		#perhaps browser sent empty filename because user didn't upload
+		if file.filename == '': 
+			print("filename empty")
+			return redirect(request.url)
+
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			#add project to database 
+			cursor.execute("INSERT INTO project(title, body, start_date, end_date, short_description) VALUES (%s, 'Nothing', %s, %s, %s)", 
+				(title, sDate, eDate, desc))
+			conn.commit()
+			print("upload successful?")
+
 	return render_template('makeProject.html', name=name)	
 
 
