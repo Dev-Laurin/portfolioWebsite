@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="375"
+     inkscape:cx="53.571429"
      inkscape:cy="520"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,21 +57,25 @@
        d="m 361.42858,280.93359 a 481.42686,462.85827 0 0 0 -481.42942,462.85659 l 962.85878,0 A 481.42686,462.85827 0 0 0 361.42858,280.93359 Z"
        id="path3336"
        inkscape:connector-curvature="0" />
-    <rect
-       style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3343"
-       width="222.85715"
-       height="220"
-       x="182.85712"
-       y="463.79077"
-       ry="110"
-       rx="34.285713" />
-    <circle
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path3345"
-       cx="288.57141"
-       cy="560.93365"
-       r="62.857143" />
+    <g
+       id="eye"
+       inkscape:label="#eye">
+      <rect
+         rx="34.285713"
+         ry="110"
+         y="463.79077"
+         x="182.85712"
+         height="220"
+         width="222.85715"
+         id="rect3343"
+         style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         r="62.857143"
+         cy="560.93365"
+         cx="288.57141"
+         id="path3345"
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
     <ellipse
        style="opacity:1;fill:#666666;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path3347"
@@ -81,13 +85,14 @@
        ry="45.714287" />
     <circle
        style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path3349"
+       id="sensor"
        cx="480"
        cy="652.36224"
-       r="25.714285" />
+       r="25.714285"
+       inkscape:label="#sensor" />
     <rect
        style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3351"
+       id="bigBlueFaceRect"
        width="60"
        height="160"
        x="71.428574"
@@ -96,7 +101,7 @@
        ry="110" />
     <rect
        style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3351-3"
+       id="blueFaceRect"
        width="45.714287"
        height="102.85714"
        x="438.57141"
@@ -106,10 +111,10 @@
     <path
        style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 139.35547 335.21875 A 481.42686 462.85827 0 0 0 44.875 398.07617 L 683.50195 398.07617 A 481.42686 462.85827 0 0 0 588.38086 335.21875 L 139.35547 335.21875 z "
-       id="path3417" />
+       id="headband" />
     <rect
        style="opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:12.39500046;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3432"
+       id="greyFaceRect"
        width="71.428574"
        height="205.71429"
        x="-37.142857"

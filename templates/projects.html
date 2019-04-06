@@ -1,16 +1,6 @@
 {% extends "layout.html" %}
 
 {% block main %}
-
-//Ideas - have each card project link to a blog post for more info 
-  <div class="row">
-    <div class="col s8"> 
-      Current Work in Progress 
-    </div>
-    <div class="col s4"> 
-      Recently Completed
-    </div> 
-  </div>
     {% set index = namespace(foo=0) %}
     {% set rows = (data|length)//3 + 1 %}
     {% for row in range(rows) %} 

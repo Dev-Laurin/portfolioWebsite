@@ -12,8 +12,8 @@ app.config['UPLOAD_FOLDER'] = "static/images/projects/"
 
 #MySQL config
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = '' 
-app.config['MYSQL_DATABASE_PASSWORD'] = '' 
+app.config['MYSQL_DATABASE_USER'] = 'webdev' 
+app.config['MYSQL_DATABASE_PASSWORD'] = 'shulkAssistant50%' 
 app.config['MYSQL_DATABASE_DB'] = 'site'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)

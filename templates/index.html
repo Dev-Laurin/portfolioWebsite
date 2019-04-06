@@ -1,8 +1,74 @@
 {% extends "layout.html" %}
 
 {% block main %}
+<script src="../static/js/Snap.svg-0.5.1/dist/snap.svg-min.js"></script>
 
-//Ideas - Home Page
+<script>
+	var s = Snap(1000, 600); 
+	var circle = s.circle(150, 150, 100); 
+	circle.drag(); 
+	var eye = ""; 
 
+	//Static
+	//Bookshelf
+	Snap.load("../static/images/bookshelf.svg", function(f){
+		var g = f.select("g"); 
+		g.attr({transform: "s0.4,0.4 t700,150"}); 
+		s.append(g); 
+	}); 
+
+	//Desk 
+
+	//Laptop
+
+	//Person
+
+	//Animations
+
+	//Clock 
+
+	//VW beetle
+
+	//Robot
+	Snap.load("../static/images/robot.svg", function(f){
+		var g = f.select("g");
+
+		//setup animations  
+
+		//select the facial components to move
+		eye = f.select("#eye"); 
+		s.append(eye); 
+		rotateRobotHead(); 
+		eye.attr({transform: "t50,-300"}); 
+ 
+		s.append(g);
+
+		//scale image down 
+		g.attr({transform: "s0.2,0.2"}); 
+		g.drag();  
+
+		// var s1 = new Snap.Matrix(); 
+		// s1.scale(0.05); 
+		// s1.translate(0, -100); 
+
+		// g.animate({transform: s1}); 
+	}); 
+
+	function rotateRobotHead(){
+		var x = 50; 
+		var maxX = 200; 
+		for(var i=x; i<maxX; i++){
+			eye.attr({transform: ('t' + (i) + ",-300")}); 
+		}
+		//wait a second 
+		setTimeout(function(){}, 1000); 
+		//go back 
+		for(var i=x; i<maxX; i++){
+			eye.attr({transform: ('t' + (-i) + ",-300")}); 
+		}
+
+		setTimeout("rotateRobotHead()", 1000); 
+	}
+</script>
   
 {% endblock %}
