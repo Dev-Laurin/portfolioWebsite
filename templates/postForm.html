@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<link href="{{ url_for('static', filename='node_modules/quill/dist/quill.snow.css')}}" rel="stylesheet" type="text/css" /> 
+<script src="{{ url_for('static', filename='node_modules/quill/dist/quill.min.js')}}"></script>
+<script src="{{ url_for('static', filename='node_modules/quill-image-resize/image-resize.min.js')}}"></script>
+<div class="container"> 
+  <h2>New Post</h2> 
+  <!-- Title --> 
+  <div class="row">
+    <form action="/makePost" method="post" enctype="multipart/form-data" class="col s12">
+      <div class="row">
+        <div class="input-field col s12"> 
+          <input id="title" name="title" type="text" class="validate" required>
+          <label for="title">Title</label>
+        </div>
+      </div>
+      <!-- Date --> 
+      <div class="row"> 
+        <div class="input-field col s12"> 
+          <input type="text" name="date" id="date" class="datepicker"> 
+          <label for="date">Date</label>
+        </div>
+      </div>
+      <!-- Body --> 
+      <div class="row"> 
+        <div class="input-field col s12"> 
+          <div id="editor">
+            <p>Hello World</p> 
+          </div> 
+        </div>
+      </div>
+      <!-- Taxonomy terms, comments --> 
+      <!-- Submit --> 
+      <div class="row"> 
+        <div class="col s12"> 
+          <button class="right btn waves-effect waves-light" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  var quill = new Quill('#editor', {
+    modules: {
+      toolbar: [
+        [{'header': [1, 2, 3, 4, 5, 6, false]}],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{'font': []}],  
+        ['link', 'blockquote', 'code-block', 'image', 'video'],
+        [{list: 'ordered'}, {list: 'bullet'}], 
+        [{'script': 'sub'}, {'script': 'super'}], 
+        [{'indent': '-1'}, {'indent': '+1'}], 
+        [{'direction': 'rtl'}], 
+        [{'color': []}, {'background': []}], 
+        [{'align': []}],
+        ['clean']
+      ], 
+      imageResize: {
+        displaySize: true
+      }
+    }, 
+    theme: 'snow'
+  });
+</script>
+{% endblock %}

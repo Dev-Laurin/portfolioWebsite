@@ -5,27 +5,75 @@
 
 <script>
 	var s = Snap(1000, 600); 
-	var circle = s.circle(150, 150, 100); 
-	circle.drag(); 
 	var eye = ""; 
 
 	//Static
-	//Bookshelf
-	Snap.load("../static/images/bookshelf.svg", function(f){
-		var g = f.select("g"); 
-		g.attr({transform: "s0.4,0.4 t700,150"}); 
-		s.append(g); 
-	}); 
+	// //Bookshelf
+	// Snap.load("../static/images/bookshelf.svg", function(f){
+	// 	var g = f.select("g"); 
+	// 	g.attr({transform: "s0.4,0.4 t700,150"}); 
+	// 	s.append(g); 
+	// }); 
 
-	//Desk 
+	// //Desk 
+	
+	// //Person
+	// Snap.load("../static/images/person.svg", function(f){
+	// 	var g = f.select("g"); 
+	// 	g.attr({transform: "s0.2,0.2 t2000,350"}); 
+	// 	s.append(g); 
+	// }); 
 
-	//Laptop
+	// //Laptop
+	// Snap.load("../static/images/laptop.svg", function(f){
+	// 	var g = f.select("g"); 
+	// 	g.attr({transform: "s0.5,0.5 t600,250"}); 
+	// 	s.append(g); 
+	// });
 
-	//Person
+	
 
 	//Animations
 
-	//Clock 
+	//Clock
+	var second = ""; 
+	var minute = ""; 
+	var hour = "";  
+	Snap.load("../static/images/clock.svg", function(f){
+		var clock = f.select("#clock"); 
+		second = f.select("#second"); 
+		minute = f.select("#minute"); 
+		hour = f.select("#hour"); 
+
+		//Position
+		clock.attr({transform: "t800,250 s0.5,0.5"}); 
+		second.attr({transform: "t685,225 s0.4,0.4"});
+		minute.attr({transform: "t881,300 s0.4,0.4"});
+		hour.attr({transform: "t881,280 s0.4,0.4"});
+
+		s.append(clock); 
+		s.append(second); 
+		s.append(minute); 
+		s.append(hour); 
+
+		animateClock(); 
+
+		
+	}); 
+
+	function animateClock(){
+		var time = new Date(); 
+		var hours = time.getHours(); 
+		var mins = time.getMinutes(); 
+		var secs = time.getSeconds(); 
+
+		//Move the needles
+		second.attr({transform:  'r' + (secs*6-3) + ",0,0"}); 
+		second.animate({transform: 'r' + (secs*6) + ',0,0'}, 500, mina.elastic); 
+
+		setTimeout("animateClock()", 1000);
+
+	}
 
 	//VW beetle
 

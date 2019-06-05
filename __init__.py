@@ -66,9 +66,7 @@ def interests(name=None):
 #POST requests 
 @app.route("/makeProject", methods=["GET", "POST"])
 def project(name=None): 
-	print("here")
 	if request.method == "POST": 
-		print("post method")
 		#Get form data 
 		title = request.form.get('title', False) 
 		desc = request.form.get('shortDescription', False)
@@ -79,26 +77,14 @@ def project(name=None):
 		sDate = datetime.strptime(sDate, '%b %d, %Y').strftime('%Y-%m-%d')
 		eDate = datetime.strptime(eDate, '%b %d, %Y').strftime('%Y-%m-%d')
 
-		print(request.form)
-
-		print(title)
-		print(desc)
-		print(sDate)
-		print(eDate)
-
-		print("Got stuff, moving to image")
-
 		#get image for project & upload it
 		if 'file' not in request.files:
-			print("file not in req.files")
 			return redirect(request.url)
 
 		file = request.files['file']
-		print(file)
 
 		#perhaps browser sent empty filename because user didn't upload
 		if file.filename == '': 
-			print("filename empty")
 			return redirect(request.url)
 
 		if file and allowed_file(file.filename):
@@ -108,9 +94,25 @@ def project(name=None):
 			cursor.execute("INSERT INTO project(title, body, start_date, end_date, short_description) VALUES (%s, 'Nothing', %s, %s, %s)", 
 				(title, sDate, eDate, desc))
 			conn.commit()
-			print("upload successful?")
 
 	return render_template('makeProject.html', name=name)	
+
+@app.route("/makePost", methods=["GET", "POST"])
+def post(name=None):
+	if request.method == "POST": 
+		#post 
+		print("POST")
+		#title 
+		#html body 
+		#original date
+
+		#load images 
+
+		#revised date = now 
+	else: 
+		print("GET")
+		
+	return render_template('postForm.html', name=name)
 
 
 from flask import send_from_directory
