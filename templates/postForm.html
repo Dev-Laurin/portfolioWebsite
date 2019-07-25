@@ -30,19 +30,28 @@
           </div> 
         </div>
       </div>
+      <!-- Hidden textarea for HTML submission --> 
+      <div class="row"> 
+        <div class="input-field col s12"> 
+          <textarea id="textarea" class="materialize-textarea" name="html">
+          </textarea> 
+        </div>
+      </div>
       <!-- Taxonomy terms, comments --> 
       <!-- Submit --> 
       <div class="row"> 
         <div class="col s12"> 
-          <button class="right btn waves-effect waves-light" type="submit" name="action">Submit
+          <button class="right btn waves-effect waves-light" type="submit" name="action" onclick="send()">Submit
             <i class="material-icons right">send</i>
           </button>
         </div>
       </div>
+      {{ form.csrf_token }}
     </form>
   </div>
 </div>
 <script>
+  //Setup the wysiwig editor
   var quill = new Quill('#editor', {
     modules: {
       toolbar: [
@@ -64,5 +73,13 @@
     }, 
     theme: 'snow'
   });
+
+  function send(){
+    //get the html output of the editor into the form post 
+    var editor = document.querySelector('#editor')
+    var html = editor.children[0].innerHTML
+    document.getElementById('textarea').innerHTML = html 
+  }
+  
 </script>
 {% endblock %}

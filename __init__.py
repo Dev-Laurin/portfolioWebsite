@@ -2,6 +2,11 @@ from flask import Flask, render_template, json, request, redirect
 from werkzeug.utils import secure_filename
 from flaskext.mysql import MySQL 
 from datetime import datetime
+from forms import PostForm
+from bs4 import BeautifulSoup as bs 
+import uuid 
+import base64
+import re 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -26,6 +31,15 @@ cursor = conn.cursor()
 def allowed_file(filename):
 	return '.' in filename and \
 		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def upload_image(base64String):
+	extension = re.search('/(.*);', base64String)
+	filename = str(uuid.uuid4()) + "." + str(extension.group(1))
+	src = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+	base64String = base64String.split(',')[1]
+	with open(src, "wb") as fh: 
+		fh.write(base64.b64decode(base64String.encode()))
+		return src 
 
 #Routing
 @app.route("/")
@@ -97,22 +111,61 @@ def project(name=None):
 
 	return render_template('makeProject.html', name=name)	
 
+app.config['SECRET_KEY'] = 'a really long secret key'
 @app.route("/makePost", methods=["GET", "POST"])
 def post(name=None):
-	if request.method == "POST": 
-		#post 
-		print("POST")
-		#title 
-		#html body 
-		#original date
+	form = PostForm()
+	if form.validate_on_submit(): 
+		print('validated')
 
-		#load images 
+		if request.method == "POST": 
+			#post 
+			print("POST")
+			#title 
+			title = form.title.data 
+			print(title)
+			#original date
+			date = form.date.data 
+			date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
+			print(date)
+			#html body
+			html = form.html.data 
+			#parse images out of html 
+			soup = bs(html, features="html.parser")
+			images = soup.findAll('img')
 
-		#revised date = now 
-	else: 
-		print("GET")
-		
-	return render_template('postForm.html', name=name)
+			#upload images 
+			for image in images: 
+				image['src'] = upload_image(image['src'])
+
+			#update image src changes
+			html = str(soup)
+
+			#add blog post to database 
+			
+
+			# cursor.execute("INSERT INTO blogPost(title, original_date, revised_date, html) VALUES (%s, %s, %s, %s)", 
+			# 	(title, date, date, html))
+			# conn.commit()
+			
+			#get image for project & upload it
+			# if 'file' not in request.files:
+			# 	return redirect(request.url)
+
+			# file = request.files['file']
+
+			# #perhaps browser sent empty filename because user didn't upload
+			# if file.filename == '': 
+			# 	return redirect(request.url)
+
+			# if file and allowed_file(file.filename):
+			# 	filename = secure_filename(file.filename)
+			# 	file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+			#revised date = now 
+
+	return render_template('postForm.html', title='Post', form=form)
 
 
 from flask import send_from_directory
