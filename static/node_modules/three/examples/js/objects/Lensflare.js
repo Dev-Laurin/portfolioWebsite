@@ -14,6 +14,7 @@ THREE.Lensflare = function () {
 	//
 
 	var positionScreen = new THREE.Vector3();
+	var positionView = new THREE.Vector3();
 
 	// textures
 
@@ -34,8 +35,6 @@ THREE.Lensflare = function () {
 	// material
 
 	var geometry = THREE.Lensflare.Geometry;
-
-	var shader = THREE.Lensflare.Shader;
 
 	var material1a = new THREE.RawShaderMaterial( {
 		uniforms: {
@@ -163,7 +162,7 @@ THREE.Lensflare = function () {
 
 	this.onBeforeRender = function ( renderer, scene, camera ) {
 
-		viewport.copy( renderer.getCurrentViewport() );
+		renderer.getCurrentViewport( viewport );
 
 		var invAspect = viewport.w / viewport.z;
 		var halfViewportWidth = viewport.z / 2.0;
@@ -177,10 +176,12 @@ THREE.Lensflare = function () {
 
 		// calculate position in screen space
 
-		positionScreen.setFromMatrixPosition( this.matrixWorld );
+		positionView.setFromMatrixPosition( this.matrixWorld );
+		positionView.applyMatrix4( camera.matrixWorldInverse );
 
-		positionScreen.applyMatrix4( camera.matrixWorldInverse );
-		positionScreen.applyMatrix4( camera.projectionMatrix );
+		if ( positionView.z > 0 ) return; // lensflare is behind the camera
+
+		positionScreen.copy( positionView ).applyMatrix4( camera.projectionMatrix );
 
 		// horizontal and vertical coordinate of the lower left corner of the pixels to copy
 
@@ -198,8 +199,8 @@ THREE.Lensflare = function () {
 			// render pink quad
 
 			var uniforms = material1a.uniforms;
-			uniforms.scale.value = scale;
-			uniforms.screenPosition.value = positionScreen;
+			uniforms[ "scale" ].value = scale;
+			uniforms[ "screenPosition" ].value = positionScreen;
 
 			renderer.renderBufferDirect( camera, null, geometry, material1a, mesh1, null );
 
@@ -210,8 +211,8 @@ THREE.Lensflare = function () {
 			// restore graphics
 
 			var uniforms = material1b.uniforms;
-			uniforms.scale.value = scale;
-			uniforms.screenPosition.value = positionScreen;
+			uniforms[ "scale" ].value = scale;
+			uniforms[ "screenPosition" ].value = positionScreen;
 
 			renderer.renderBufferDirect( camera, null, geometry, material1b, mesh1, null );
 
@@ -226,15 +227,15 @@ THREE.Lensflare = function () {
 
 				var uniforms = material2.uniforms;
 
-				uniforms.color.value.copy( element.color );
-				uniforms.map.value = element.texture;
-				uniforms.screenPosition.value.x = positionScreen.x + vecX * element.distance;
-				uniforms.screenPosition.value.y = positionScreen.y + vecY * element.distance;
+				uniforms[ "color" ].value.copy( element.color );
+				uniforms[ "map" ].value = element.texture;
+				uniforms[ "screenPosition" ].value.x = positionScreen.x + vecX * element.distance;
+				uniforms[ "screenPosition" ].value.y = positionScreen.y + vecY * element.distance;
 
 				var size = element.size / viewport.w;
 				var invAspect = viewport.w / viewport.z;
 
-				uniforms.scale.value.set( size * invAspect, size );
+				uniforms[ "scale" ].value.set( size * invAspect, size );
 
 				material2.uniformsNeedUpdate = true;
 
@@ -254,6 +255,12 @@ THREE.Lensflare = function () {
 
 		tempMap.dispose();
 		occlusionMap.dispose();
+
+		for ( var i = 0, l = elements.length; i < l; i ++ ) {
+
+			elements[ i ].texture.dispose();
+
+		}
 
 	};
 

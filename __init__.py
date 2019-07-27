@@ -2,11 +2,11 @@ from flask import Flask, render_template, json, request, redirect
 from werkzeug.utils import secure_filename
 from flaskext.mysql import MySQL 
 from datetime import datetime
-from forms import PostForm
-from bs4 import BeautifulSoup as bs 
-import uuid 
-import base64
-import re 
+from forms import PostForm #flask forms 
+from bs4 import BeautifulSoup as bs #HTML Parsing
+import uuid #Filename random generator
+import base64 #base64 image decoding 
+import re #substring search 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -35,7 +35,7 @@ def allowed_file(filename):
 def upload_image(base64String):
 	extension = re.search('/(.*);', base64String)
 	filename = str(uuid.uuid4()) + "." + str(extension.group(1))
-	src = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+	src = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename))
 	base64String = base64String.split(',')[1]
 	with open(src, "wb") as fh: 
 		fh.write(base64.b64decode(base64String.encode()))
@@ -78,39 +78,6 @@ def interests(name=None):
 	return render_template('interests.html', name=name)	
 
 #POST requests 
-@app.route("/makeProject", methods=["GET", "POST"])
-def project(name=None): 
-	if request.method == "POST": 
-		#Get form data 
-		title = request.form.get('title', False) 
-		desc = request.form.get('shortDescription', False)
-		sDate = request.form.get('startDate', False) 
-		eDate = request.form.get('endDate', False)
-
-		#convert dates to mysql compatible format 
-		sDate = datetime.strptime(sDate, '%b %d, %Y').strftime('%Y-%m-%d')
-		eDate = datetime.strptime(eDate, '%b %d, %Y').strftime('%Y-%m-%d')
-
-		#get image for project & upload it
-		if 'file' not in request.files:
-			return redirect(request.url)
-
-		file = request.files['file']
-
-		#perhaps browser sent empty filename because user didn't upload
-		if file.filename == '': 
-			return redirect(request.url)
-
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			#add project to database 
-			cursor.execute("INSERT INTO project(title, body, start_date, end_date, short_description) VALUES (%s, 'Nothing', %s, %s, %s)", 
-				(title, sDate, eDate, desc))
-			conn.commit()
-
-	return render_template('makeProject.html', name=name)	
-
 app.config['SECRET_KEY'] = 'a really long secret key'
 @app.route("/makePost", methods=["GET", "POST"])
 def post(name=None):
@@ -142,28 +109,10 @@ def post(name=None):
 			html = str(soup)
 
 			#add blog post to database 
-			
 
 			# cursor.execute("INSERT INTO blogPost(title, original_date, revised_date, html) VALUES (%s, %s, %s, %s)", 
 			# 	(title, date, date, html))
 			# conn.commit()
-			
-			#get image for project & upload it
-			# if 'file' not in request.files:
-			# 	return redirect(request.url)
-
-			# file = request.files['file']
-
-			# #perhaps browser sent empty filename because user didn't upload
-			# if file.filename == '': 
-			# 	return redirect(request.url)
-
-			# if file and allowed_file(file.filename):
-			# 	filename = secure_filename(file.filename)
-			# 	file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-
-			#revised date = now 
 
 	return render_template('postForm.html', title='Post', form=form)
 
