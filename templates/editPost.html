@@ -8,27 +8,32 @@
   <h2>Edit Post</h2> 
   <!-- Title --> 
   <div class="row">
-    <form action="/post" method="post" enctype="multipart/form-data" class="col s12">
+    <form action="/editPost/{{data.id}}" method="post" enctype="multipart/form-data" class="col s12">
       <div class="row">
         <div class="input-field col s12"> 
-          <input id="title" name="title" type="text" class="validate" required>
-          <label for="title">{{data[0].title}}</label>
+          <input id="title" name="title" type="text" class="validate" required value="{{data.title}}">
+          <label for="title">Title</label>
         </div>
       </div>
+      <div class="row"> 
+        <div class="input-field col s12"> 
+          <img id="imagePreview" src="{{data.image}}" style="width: 100%;"> 
+        </div> 
+      </div> 
       <!-- Image upload --> 
       <div class="file-field input-field">
         <div class="btn">
           <span>Image</span>
-          <input type="file" name="file" value="{{data[0].image}}"> 
+          <input onchange="updateImagePreview(this)" type="file" name="file" > 
         </div>
         <div class="file-path-wrapper">
-          <input class="file-path validate" type="text"> 
+          <input class="file-path validate" type="text" value="{{data.image}}"> 
         </div>
       </div>
       <!-- Date --> 
       <div class="row"> 
         <div class="input-field col s12"> 
-          <input type="text" name="date" id="date" class="datepicker"> 
+          <input type="text" name="date" id="datepicker" class="datepicker"> 
           <label for="date">Date</label>
         </div>
       </div>
@@ -36,7 +41,7 @@
       <div class="switch" >
         <label>
           Just a post
-          <input type="checkbox" name="isProject" id="isProject" value="{{data[0].switch}}">
+          <input type="checkbox" name="isProject" id="isProject">
           <span class="lever"></span>
           Is a project
         </label>
@@ -45,7 +50,7 @@
       <div class="row"> 
         <div class="input-field col s12"> 
           <div id="editor">
-            {{data[0].html|safe}}
+            {{data.html|safe}}
           </div> 
         </div>
       </div>
@@ -60,8 +65,7 @@
       <!-- Submit --> 
       <div class="row"> 
         <div class="col s12"> 
-          <button class="right btn waves-effect waves-light" type="submit" name="action" onclick="send()">Submit
-            <i class="material-icons right">send</i>
+          <button class="right btn waves-effect waves-light" type="submit" name="action" onclick="send()">Update
           </button>
         </div>
       </div>
@@ -100,10 +104,21 @@
     document.getElementById('textarea').innerHTML = html 
   }
 
-  //Automatically set to today's date 
-  datepicker = getElementById('date'); 
-  var instance = M.Datepicker.getInstance(datepicker);
-  instance.setDate(new Date()); 
+  function updateImagePreview(input){
+    if(input.files && input.files[0]){
+      var reader = new FileReader(); 
+      reader.onload = function(e){
+        document.getElementById('imagePreview').src = e.target.result; 
+      }
+      reader.readAsDataURL(input.files[0]); 
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    //set switch value 
+    value = {{data.switch}}; 
+    document.getElementById('isProject').checked = value; 
+  }); 
   
 </script>
 {% endblock %}

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var instances = M.Datepicker.init(elems, {
     'setDefaultDate': true, 
     'autoClose': true,
-    'defaultDate': Date()
+    'defaultDate': new Date()
   });
 
   function initCarouselModal() {
