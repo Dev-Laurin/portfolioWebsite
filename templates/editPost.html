@@ -5,21 +5,21 @@
 <script src="{{ url_for('static', filename='node_modules/quill/dist/quill.min.js')}}"></script>
 <script src="{{ url_for('static', filename='node_modules/quill-image-resize/image-resize.min.js')}}"></script>
 <div class="container"> 
-  <h2>New Post</h2> 
+  <h2>Edit Post</h2> 
   <!-- Title --> 
   <div class="row">
     <form action="/post" method="post" enctype="multipart/form-data" class="col s12">
       <div class="row">
         <div class="input-field col s12"> 
           <input id="title" name="title" type="text" class="validate" required>
-          <label for="title">Title</label>
+          <label for="title">{{data[0].title}}</label>
         </div>
       </div>
       <!-- Image upload --> 
       <div class="file-field input-field">
         <div class="btn">
           <span>Image</span>
-          <input type="file" name="file"> 
+          <input type="file" name="file" value="{{data[0].image}}"> 
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text"> 
@@ -36,7 +36,7 @@
       <div class="switch" >
         <label>
           Just a post
-          <input type="checkbox" name="isProject" id="isProject">
+          <input type="checkbox" name="isProject" id="isProject" value="{{data[0].switch}}">
           <span class="lever"></span>
           Is a project
         </label>
@@ -45,7 +45,7 @@
       <div class="row"> 
         <div class="input-field col s12"> 
           <div id="editor">
-            <p>Hello World</p> 
+            {{data[0].html|safe}}
           </div> 
         </div>
       </div>

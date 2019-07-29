@@ -13,7 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   //Date Picker
   var elems = document.querySelectorAll('.datepicker');
-  var instances = M.Datepicker.init(elems, {});
+  var instances = M.Datepicker.init(elems, {
+    'setDefaultDate': true, 
+    'autoClose': true,
+    'defaultDate': Date()
+  });
 
   function initCarouselModal() {
     var elems = document.querySelectorAll('.carousel');

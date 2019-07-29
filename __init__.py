@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request, redirect
+from flask import Flask, url_for, render_template, json, request, redirect
 from werkzeug.utils import secure_filename
 from flaskext.mysql import MySQL 
 from datetime import datetime
@@ -7,13 +7,22 @@ from bs4 import BeautifulSoup as bs #HTML Parsing
 import uuid #Filename random generator
 import base64 #base64 image decoding 
 import re #substring search 
-
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+from flask_uploads import UploadSet, configure_uploads, IMAGES, TEXT, DOCUMENTS, patch_request_class
 
 #Flask config
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['UPLOAD_FOLDER'] = "static/images/projects/"
+app.config['UPLOAD_FOLDER'] = "static/uploads/"
+
+images = UploadSet('images', IMAGES)
+text = UploadSet('text', TEXT)
+documents = UploadSet('documents', DOCUMENTS)
+app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads/images/'
+app.config['UPLOADED_DOCUMENTS_DEST'] = 'static/uploads/documents/'
+app.config['UPLOADED_TEXT_DEST'] = 'static/uploads/text/'
+configure_uploads(app, (images, text, documents))
+patch_request_class(app, 50 * 1024 * 1024) #50 MB max file upload
+ALLOWED_EXTENSIONS = images
 
 #MySQL config
 mysql = MySQL()
@@ -35,25 +44,25 @@ def allowed_file(filename):
 def upload_image(base64String):
 	extension = re.search('/(.*);', base64String)
 	filename = str(uuid.uuid4()) + "." + str(extension.group(1))
-	src = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename))
+	src = os.path.join(app.config['UPLOADED_IMAGES_DEST'], secure_filename(filename))
 	base64String = base64String.split(',')[1]
 	with open(src, "wb") as fh: 
 		fh.write(base64.b64decode(base64String.encode()))
 		return src 
 
 #Routing
-@app.route("/")
+@app.route("/", methods=["GET"])
 def hello(name=None): 
 	return render_template('index.html', name=name)
 
-@app.route("/about")
+@app.route("/about", methods=["GET"])
 def about(name=None): 
 	return render_template('about.html', name=name)
 
-@app.route("/projects")
-def projects(name=None): 
+@app.route("/posts", methods=["GET"])
+def posts(name=None): 
 	#call Python Procedure - GET all projects
-	cursor.callproc('getAllProjects')
+	cursor.callproc('getAllPosts')
 	data = cursor.fetchall()
 	if len(data) is not 0: 
 		conn.commit()
@@ -62,58 +71,131 @@ def projects(name=None):
 		dd = []
 		for d in data: 
 			dict = {}
-			dict['title'] = d[0]
-			dict['body'] = d[1]
-			dict['start_date'] = d[2]
-			dict['end_date'] = d[3]
-			dict['description'] = d[4]
+			dict['date'] = d[3]
+			dict['image'] = d[2]
+			dict['title'] = d[1]
+			dict['id'] = d[0]
+			html = d[4]
+
+			#Parse HTML to get first sentence or so for short description
+			soup = bs(html, features="html.parser")
+			firstParagraph = soup.p.string # first paragraph tag 
+			if isinstance(firstParagraph, (str)): 
+				firstParagraph[0:49] #50 characters
+				dict['desc'] = firstParagraph
+			else:
+				dict['desc'] = ""
 			dd.append(dict)
 
-		return render_template('projects.html', name=name, data=dd)
+		return render_template('posts.html', name=name, data=dd)
 	else:
 		return json.dumps({'error':str(data[0])})
 
-@app.route("/interests")
+@app.route("/interests", methods=["GET"])
 def interests(name=None): 
 	return render_template('interests.html', name=name)	
 
+@app.route("/post/<id>", methods=["GET"])
+def getPost(id, name=None):
+	#call Python Procedure - GET all projects
+	cursor.callproc('getPost', id)
+	data = cursor.fetchall()
+	if len(data) is not 0: 
+		conn.commit()
+
+		#make a dictionary for easy frontend templating
+		dd = []
+		for d in data: 
+			dict = {}
+			dict['date'] = d[3]
+			dict['image'] = "../" + d[2]
+			dict['title'] = d[1]
+			dict['html'] = d[4]
+			dict['id'] = d[0]
+			
+			dd.append(dict)
+
+		return render_template('view_post.html', name=name, data=dd)
+	else:
+		return json.dumps({'error':str(data[0])})
+
+@app.route("/editPost/<id>", methods=["GET", "POST"])
+def editPost(id, name=None):
+	form = PostForm()
+	#call Python Procedure - GET all projects
+	cursor.callproc('getPost', id)
+	data = cursor.fetchall()
+	if len(data) is not 0: 
+		conn.commit()
+
+		#make a dictionary for easy frontend templating
+		dd = []
+		for d in data: 
+			dict = {}
+			dict['date'] = d[3]
+			dict['image'] = "../" + d[2]
+			dict['title'] = d[1]
+			dict['html'] = d[4]
+			dict['id'] = d[0]
+			
+			dd.append(dict)
+
+		return render_template('editPost.html', name=name, data=dd, form=form)
+	else:
+		return json.dumps({'error':str(data[0])})
+
 #POST requests 
 app.config['SECRET_KEY'] = 'a really long secret key'
-@app.route("/makePost", methods=["GET", "POST"])
+@app.route("/post", methods=["GET", "POST"])
 def post(name=None):
 	form = PostForm()
+
 	if form.validate_on_submit(): 
-		print('validated')
+		#title 
+		title = form.title.data 
 
-		if request.method == "POST": 
-			#post 
-			print("POST")
-			#title 
-			title = form.title.data 
-			print(title)
-			#original date
-			date = form.date.data 
-			date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
-			print(date)
-			#html body
-			html = form.html.data 
-			#parse images out of html 
-			soup = bs(html, features="html.parser")
-			images = soup.findAll('img')
+		#original date
+		date = form.date.data 
+		date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
 
-			#upload images 
-			for image in images: 
-				image['src'] = upload_image(image['src'])
+		#main image
+		if 'file' in request.files:  
+			main_image = request.files['file'] 
+			main_image.save(os.path.join(
+				app.config['UPLOADED_IMAGES_DEST'], 
+				secure_filename(main_image.filename)
+			))
+			main_image = app.config['UPLOADED_IMAGES_DEST'] + secure_filename(main_image.filename)
+		else: 
+			main_image = 'static/images/placeholder.png'
 
-			#update image src changes
-			html = str(soup)
+		#is it a project - switch 
+		isProject = form.isProject.data 
 
-			#add blog post to database 
+		#html body
+		html = form.html.data 
 
-			# cursor.execute("INSERT INTO blogPost(title, original_date, revised_date, html) VALUES (%s, %s, %s, %s)", 
-			# 	(title, date, date, html))
-			# conn.commit()
+		#parse images out of html 
+		soup = bs(html, features="html.parser")
+		images = soup.findAll('img')
 
+		#upload images 
+		for image in images: 
+			image['src'] = upload_image(image['src'])
+
+		#update image src changes
+		html = str(soup)
+
+		#add blog post to database 
+		try: 
+			cursor.execute("INSERT INTO post(title, image, date, html, isProject) VALUES (%s, %s, %s, %s, %s)", 
+				(title, main_image, date, html, isProject))
+			conn.commit()
+		except Exception as e: 
+			print("Problem inserting: " + str(e))
+			return None 
+
+	#print(form.errors)
 	return render_template('postForm.html', title='Post', form=form)
 
 

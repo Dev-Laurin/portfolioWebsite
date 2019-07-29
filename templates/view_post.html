@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+      <button class="right btn waves-effect waves-light" name="action" onclick="location.href='/editPost/{{data[0].id}}'">edit</button> 
+      <h1> {{data[0].title}}</h1>
+      <img src="{{data[0].image}}" style="width: 100%;"> 
+      <p> {{data[0].date}}</p> 
+      <p> {{data[0].html|safe}}</p> 
+      </div> 
+    </div>
+  </div>
+  
+{% endblock %}
