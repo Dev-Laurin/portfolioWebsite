@@ -19,12 +19,18 @@
       <div class="file-field input-field">
         <div class="btn">
           <span>Image</span>
-          <input type="file" name="file"> 
+          <input onchange="updateImagePreview(this)" type="file" name="file"> 
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text"> 
         </div>
       </div>
+      <!-- Image Preview --> 
+      <div class="row"> 
+        <div class="input-field col s12"> 
+          <center><img id="imagePreview" src="/static/images/placeholder.png" style="width: 60%;"></center> 
+        </div> 
+      </div> 
       <!-- Date --> 
       <div class="row"> 
         <div class="input-field col s12"> 
@@ -50,18 +56,39 @@
         </div>
       </div>
       <!-- Hidden textarea for HTML submission --> 
-      <div class="row"> 
+      <div class="row" style="display:none;"> 
         <div class="input-field col s12"> 
           <textarea id="textarea" style="display:none;" name="html">
           </textarea> 
         </div>
       </div>
       <!-- Taxonomy terms, comments --> 
+      <h5> Tags </h5> 
+      {% set index = namespace(foo=0) %}
+      {% set rows = (data|length)//3 + 1 %}
+      {% for row in range(rows) %}
+      <div class="row"> 
+        {% for i in range(3) %}
+          {% if data[index.foo] %}
+          <div class="col s4">
+            <label> 
+              <input type="checkbox" name="checkbox"/> 
+              <span>
+               {{data[index.foo].name}}
+              </span> 
+            </label>
+          </div> 
+          {% set index.foo = index.foo + 1 %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endfor %}
+      <!-- Add additional taxonomy terms -->
+
       <!-- Submit --> 
       <div class="row"> 
         <div class="col s12"> 
           <button class="right btn waves-effect waves-light" type="submit" name="action" onclick="send()">Submit
-            <i class="material-icons right">send</i>
           </button>
         </div>
       </div>
@@ -100,10 +127,15 @@
     document.getElementById('textarea').innerHTML = html 
   }
 
-  //Automatically set to today's date 
-  datepicker = getElementById('date'); 
-  var instance = M.Datepicker.getInstance(datepicker);
-  instance.setDate(new Date()); 
-  
+  function updateImagePreview(input){
+    if(input.files && input.files[0]){
+      var reader = new FileReader(); 
+      reader.onload = function(e){
+        document.getElementById('imagePreview').src = e.target.result; 
+      }
+      reader.readAsDataURL(input.files[0]); 
+    }
+  }
+
 </script>
 {% endblock %}

@@ -1,15 +1,5 @@
-from flask import Flask, url_for, render_template, json, request, redirect
-from werkzeug.utils import secure_filename
-from datetime import datetime
-from forms import PostForm #flask forms 
-from bs4 import BeautifulSoup as bs #HTML Parsing
-import uuid #Filename random generator
-import base64 #base64 image decoding 
-import re #substring search 
-
-from config import images, text, documents, app, conn, cursor #our custom flask configurations
-from forms import PostForm 
-from uploadFunctions import allowed_file, upload_image #our custom functions
+#routing.py
+import config #our custom flask configurations
 
 @app.route("/", methods=["GET"])
 def hello(name=None): 
@@ -180,7 +170,7 @@ def post(name=None):
 		date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
 
 		#main image
-		if 'file' in request.files and request.files['file'].filename != "":  
+		if 'file' in request.files:  
 			main_image = request.files['file'] 
 			main_image.save(os.path.join(
 				app.config['UPLOADED_IMAGES_DEST'], 
@@ -206,10 +196,6 @@ def post(name=None):
 
 		#update image src changes
 		html = str(soup)
-
-		#get tags 
-		tags = form.tags.data 
-		print(tags)
 
 		#add blog post to database 
 		try: 
