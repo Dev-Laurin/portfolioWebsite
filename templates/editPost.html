@@ -56,18 +56,33 @@
         </div>
       </div>
       <!-- Hidden textarea for HTML submission --> 
-      <div class="row"> 
+      <div class="row" style="display:none;"> 
         <div class="input-field col s12"> 
           <textarea id="textarea" style="display:none;" name="html">
           </textarea> 
         </div>
       </div>
       <!-- Taxonomy terms, comments --> 
+      <h5> Tags </h5> 
+      {% set index = namespace(foo=0) %}
+      {% set rows = (allTags|length)//3 + 1 %}
+      {% for row in range(rows) %}
       <div class="row"> 
-        <div class="col s6">
-
-        </div> 
-      </div> 
+        {% for i in range(3) %}
+          {% if allTags[index.foo] %}
+          <div class="col s4">
+            <label> 
+              <input type="checkbox" name="{{allTags[index.foo].name}}" id="{{allTags[index.foo].name}}"  /> 
+              <span>
+               {{allTags[index.foo].name}}
+              </span> 
+            </label>
+          </div> 
+          {% set index.foo = index.foo + 1 %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endfor %}
       <!-- Submit --> 
       <div class="row"> 
         <div class="col s12"> 
@@ -122,8 +137,17 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     //set switch value 
-    value = {{data.switch}}; 
+    value = {{data.switch}};
     document.getElementById('isProject').checked = value; 
+
+    //Set checkbox values 
+    var checkboxes = document.getElementsByTagName("input"); 
+
+    tags = {{tags|safe}}; 
+    for(var i=0; i<tags.length; i++){
+      document.getElementById(tags[i]).checked = true; 
+    }
+
   }); 
   
 </script>

@@ -72,7 +72,7 @@
           {% if data[index.foo] %}
           <div class="col s4">
             <label> 
-              <input type="checkbox" name="checkbox"/> 
+              <input type="checkbox" name="{{data[index.foo].name}}" id="{{data[index.foo].name}}"  /> 
               <span>
                {{data[index.foo].name}}
               </span> 

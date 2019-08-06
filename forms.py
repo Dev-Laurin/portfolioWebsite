@@ -14,15 +14,3 @@ class PostForm(FlaskForm):
 	image = FileField('file', validators=[FileAllowed(images, 'Images only!')])
 	isProject = BooleanField('isProject')
 	html = TextAreaField('html', validators=[DataRequired()])
-	
-	#Tags / checkboxes 
-	#call Python Procedure - GET all projects
-	cursor.callproc('getAllTags')
-	data = cursor.fetchall()
-	if len(data) is not 0: 
-		conn.commit()
-		tags = []
-		for d in data: 
-			tags.append(d[1])
-
-	tags = MultiCheckboxField('Tags', choices=tags)

@@ -84,8 +84,10 @@ def editPost(id, name=None):
 	form = PostForm()
 
 	#call Python Procedure 
-	cursor.callproc('getPost', id)
+	cursor.callproc('getPost', [id]) #get post from id 
 	data = cursor.fetchall()
+
+	#was the post id found? 
 	if len(data) is not 0: 
 		conn.commit()
 		#make a dictionary for easy frontend templating
@@ -147,7 +149,32 @@ def editPost(id, name=None):
 		
 			return redirect(url_for('posts'))
 		else: 
-			return render_template('editPost.html', name=name, data=dict, form=form)
+			#get all tags associated with this post 
+			cursor.callproc('getPostTags', [id])
+			postTags = cursor.fetchall()
+
+			print(postTags)
+			pp = []
+			for p in postTags: 
+				pp.append(p[0])
+			print(pp)
+			postTags = pp 
+			#get all tags 
+			cursor.callproc('getAllTags')
+			tagNames = cursor.fetchall()
+			if len(tagNames) is not 0: 
+				conn.commit()
+
+				#make a dictionary for easy frontend templating
+				tt = []
+				for t in tagNames: 
+					dic = {}
+					dic['name'] = t[1]
+					tt.append(dic)
+
+			print(tt)
+
+			return render_template('editPost.html', name=name, data=dict, form=form, tags=postTags, allTags=tt)
 			
 	else:
 		return "No data"
@@ -191,6 +218,7 @@ def post(name=None):
 			main_image = 'static/images/placeholder.png'
 
 		#is it a project - switch 
+		print(form.isProject)
 		isProject = form.isProject.data 
 
 		#html body
@@ -208,8 +236,16 @@ def post(name=None):
 		html = str(soup)
 
 		#get tags 
-		tags = form.tags.data 
-		print(tags)
+		tags = []
+		dict = request.form.to_dict()
+		for d in data: 
+			try: 
+				dict[d[1]]
+				tag = [d[1], d[0]]
+				tags.append(tag)
+			except KeyError as e: 
+				#Key doesn't exist
+				print("Tag key doesn't exist.")
 
 		#add blog post to database 
 		try: 
@@ -220,7 +256,18 @@ def post(name=None):
 			print("Problem inserting: " + str(e))
 			return None 
 
-	#print(form.errors)
+		#get the post id 
+		postid = cursor.lastrowid 
+		for t in tags: 
+			try: 
+				cursor.execute("INSERT INTO postToTags(postid, tagid) VALUES(%s, %s)",
+					(postid, t[1]))
+				conn.commit()
+			except Exception as e: 
+				print("Problem inserting into tag/post table: " + str(e))
+				return None 
+
+	print(form.errors)
 	return render_template('postForm.html', title='Post', data=dd, form=form)
 
 
