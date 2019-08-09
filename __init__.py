@@ -10,6 +10,7 @@ import re #substring search
 from config import images, text, documents, app, conn, cursor #our custom flask configurations
 from forms import PostForm 
 from uploadFunctions import allowed_file, upload_image #our custom functions
+from mysql_query_functions import getPostTags 
 
 @app.route("/", methods=["GET"])
 def hello(name=None): 
@@ -75,7 +76,10 @@ def getPost(id, name=None):
 			
 			dd.append(dict)
 
-		return render_template('view_post.html', name=name, data=dd)
+		#get all tags associated with this post 
+		tags = getPostTags(cursor, id)
+
+		return render_template('view_post.html', name=name, data=dd, tags=tags)
 	else:
 		return json.dumps({'error':str(data[0])})
 
@@ -164,7 +168,7 @@ def editPost(id, name=None):
 					dict = {}
 					dict['name'] = d[1]
 					dd.append(dict)
-					
+
 			#get tags 
 			tags = []
 			dict = request.form.to_dict()
@@ -197,6 +201,7 @@ def editPost(id, name=None):
 			for p in postTags: 
 				pp.append(p[0])
 			postTags = pp 
+
 			#get all tags 
 			cursor.callproc('getAllTags')
 			tagNames = cursor.fetchall()

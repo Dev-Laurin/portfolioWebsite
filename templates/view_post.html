@@ -9,6 +9,14 @@
       <img src="{{data[0].image}}" style="width: 100%;"> 
       <p> {{data[0].date}}</p> 
       <p> {{data[0].html|safe}}</p> 
+      <!-- Taxonomy terms, comments --> 
+      {% set index = namespace(foo=0) %}
+      {% for i in range(tags|length) %}
+        <div class="chip">
+        {{tags[index.foo]}}
+        </div>
+        {% set index.foo = index.foo + 1 %}
+      {% endfor %}
       </div> 
     </div>
   </div>
