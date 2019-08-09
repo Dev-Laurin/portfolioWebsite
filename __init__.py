@@ -146,6 +146,46 @@ def editPost(id, name=None):
 			except Exception as e: 
 				print("Problem inserting: " + str(e))
 				return None 
+
+			#delete previous tag entries
+			cursor.callproc('deletePostTags', [id]) #get post from id 
+			res = cursor.fetchall()
+			print(res)
+
+			#add as new tag entries 
+			cursor.callproc('getAllTags')
+			data = cursor.fetchall()
+			if len(data) is not 0: 
+				conn.commit()
+
+				#make a dictionary for easy frontend templating
+				dd = []
+				for d in data: 
+					dict = {}
+					dict['name'] = d[1]
+					dd.append(dict)
+					
+			#get tags 
+			tags = []
+			dict = request.form.to_dict()
+			for d in data: 
+				try: 
+					dict[d[1]]
+					tag = [d[1], d[0]]
+					tags.append(tag)
+				except KeyError as e: 
+					#Key doesn't exist
+					print("Tag key doesn't exist.")
+
+			postid = id 
+			for t in tags: 
+				try: 
+					cursor.execute("INSERT INTO postToTags(postid, tagid) VALUES(%s, %s)",
+						(postid, t[1]))
+					conn.commit()
+				except Exception as e: 
+					print("Problem inserting into tag/post table: " + str(e))
+					return None 
 		
 			return redirect(url_for('posts'))
 		else: 
@@ -153,11 +193,9 @@ def editPost(id, name=None):
 			cursor.callproc('getPostTags', [id])
 			postTags = cursor.fetchall()
 
-			print(postTags)
 			pp = []
 			for p in postTags: 
 				pp.append(p[0])
-			print(pp)
 			postTags = pp 
 			#get all tags 
 			cursor.callproc('getAllTags')
@@ -171,8 +209,6 @@ def editPost(id, name=None):
 					dic = {}
 					dic['name'] = t[1]
 					tt.append(dic)
-
-			print(tt)
 
 			return render_template('editPost.html', name=name, data=dict, form=form, tags=postTags, allTags=tt)
 			
