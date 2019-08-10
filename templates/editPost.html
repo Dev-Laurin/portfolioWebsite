@@ -4,6 +4,7 @@
 <link href="{{ url_for('static', filename='node_modules/quill/dist/quill.snow.css')}}" rel="stylesheet" type="text/css" /> 
 <script src="{{ url_for('static', filename='node_modules/quill/dist/quill.min.js')}}"></script>
 <script src="{{ url_for('static', filename='node_modules/quill-image-resize/image-resize.min.js')}}"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div class="container"> 
   <h2>Edit Post</h2> 
   <!-- Title --> 
@@ -83,6 +84,11 @@
         {% endfor %}
       </div>
       {% endfor %}
+      <!-- Add new tags? --> 
+      <div class="chips" name="chips"></div>
+      
+      <!-- Keep the new tags here for sending --> 
+      <div id="newTags"></div> 
       <!-- Submit --> 
       <div class="row"> 
         <div class="col s12"> 
@@ -123,6 +129,20 @@
     var editor = document.querySelector('#editor')
     var html = editor.children[0].innerHTML
     document.getElementById('textarea').innerHTML = html 
+
+    //get chips data 
+    var chips = document.querySelector('.chips'); 
+    var chipInstance = M.Chips.getInstance(chips); 
+    var chipData = chipInstance.chipsData; 
+    var newTags = document.querySelector('#newTags'); 
+
+    for(var i=0; i<chipData.length; i++){
+      var text = document.createElement('div');
+      text.style.display = 'none';  
+      text.innerHTML = "<input type='text' value='" + chipData[i].tag + "' name='newTag[]'/>"; 
+
+      newTags.appendChild(text); 
+    } 
   }
 
   function updateImagePreview(input){

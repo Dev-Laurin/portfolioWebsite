@@ -42,7 +42,7 @@ def posts(name=None):
 			soup = bs(html, features="html.parser")
 			firstParagraph = soup.p.string # first paragraph tag 
 			if isinstance(firstParagraph, (str)): 
-				firstParagraph[0:49] #50 characters
+				firstParagraph = firstParagraph[0:49] #50 characters
 				dict['desc'] = firstParagraph
 			else:
 				dict['desc'] = ""
@@ -86,6 +86,8 @@ def getPost(id, name=None):
 @app.route("/editPost/<id>", methods=["GET", "POST"])
 def editPost(id, name=None):
 	form = PostForm()
+
+	print(request.form)
 
 	#call Python Procedure 
 	cursor.callproc('getPost', [id]) #get post from id 
@@ -190,7 +192,29 @@ def editPost(id, name=None):
 				except Exception as e: 
 					print("Problem inserting into tag/post table: " + str(e))
 					return None 
-		
+
+			#get the new tags 
+			newTags = request.form.getlist('newTag[]')
+
+			#add new tags to database 
+			for t in newTags: 
+				try: 
+					cursor.execute("INSERT INTO tags(name) VALUES(%s)",
+						(t))
+					conn.commit()
+					tagid = cursor.lastrowid 
+					#add tag reference to post id in database 
+					try: 
+						cursor.execute("INSERT INTO postToTags(postid, tagid) VALUES(%s, %s)",
+							(postid, tagid))
+						conn.commit()
+					except Exception as e: 
+						print("Problem inserting new tags into tag/post table: " + str(e))
+						return None 
+				except Exception as e: 
+					print("Problem inserting into tag/post table: " + str(e))
+					return None 
+
 			return redirect(url_for('posts'))
 		else: 
 			#get all tags associated with this post 

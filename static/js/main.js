@@ -24,4 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Carousel.init(elems, {'fullWidth': true});
     instances[0].set(2);
   }
+
+  //Chips
+  var elems = document.querySelectorAll('.chips');
+  var instances = M.Chips.init(elems, {});
 });
