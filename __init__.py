@@ -10,7 +10,7 @@ import re #substring search
 from config import images, text, documents, app, conn, cursor #our custom flask configurations
 from forms import PostForm 
 from uploadFunctions import allowed_file, upload_image #our custom functions
-from mysql_query_functions import getPostTags 
+from mysql_query_functions import getPostTags, getAllPosts, getAllTags, createTagReferences, addNewTags, editPostInDB, getPostFromDB
 
 @app.route("/", methods=["GET"])
 def hello(name=None): 
@@ -22,35 +22,8 @@ def about(name=None):
 
 @app.route("/posts", methods=["GET"])
 def posts(name=None): 
-	#call Python Procedure - GET all projects
-	cursor.callproc('getAllPosts')
-	data = cursor.fetchall()
-	if len(data) is not 0: 
-		conn.commit()
-
-		#make a dictionary for easy frontend templating
-		dd = []
-		for d in data: 
-			dict = {}
-			dict['date'] = d[3]
-			dict['image'] = d[2]
-			dict['title'] = d[1]
-			dict['id'] = d[0]
-			html = d[4]
-
-			#Parse HTML to get first sentence or so for short description
-			soup = bs(html, features="html.parser")
-			firstParagraph = soup.p.string # first paragraph tag 
-			if isinstance(firstParagraph, (str)): 
-				firstParagraph = firstParagraph[0:49] #50 characters
-				dict['desc'] = firstParagraph
-			else:
-				dict['desc'] = ""
-			dd.append(dict)
-
-		return render_template('posts.html', name=name, data=dd)
-	else:
-		return json.dumps({'error':str(data[0])})
+	posts = getAllPosts(cursor, conn)
+	return render_template('posts.html', name=name, data=posts)
 
 @app.route("/interests", methods=["GET"])
 def interests(name=None): 
@@ -58,53 +31,24 @@ def interests(name=None):
 
 @app.route("/post/<id>", methods=["GET"])
 def getPost(id, name=None):
-	#call Python Procedure - GET all projects
-	cursor.callproc('getPost', id)
-	data = cursor.fetchall()
-	if len(data) is not 0: 
-		conn.commit()
-
-		#make a dictionary for easy frontend templating
-		dd = []
-		for d in data: 
-			dict = {}
-			dict['date'] = d[3]
-			dict['image'] = "../" + d[2]
-			dict['title'] = d[1]
-			dict['html'] = d[4]
-			dict['id'] = d[0]
-			
-			dd.append(dict)
-
+	try: 
+		post = getPostFromDB(cursor, conn, id)
 		#get all tags associated with this post 
 		tags = getPostTags(cursor, id)
-
-		return render_template('view_post.html', name=name, data=dd, tags=tags)
-	else:
-		return json.dumps({'error':str(data[0])})
+		return render_template('view_post.html', name=name, data=post, tags=tags)
+	except Exception as e: 
+		error = "Could not get post or post tags from database."
+		print(e) 
+		return render_template('error.html', error=error)
 
 @app.route("/editPost/<id>", methods=["GET", "POST"])
 def editPost(id, name=None):
 	form = PostForm()
 
-	print(request.form)
-
-	#call Python Procedure 
-	cursor.callproc('getPost', [id]) #get post from id 
-	data = cursor.fetchall()
-
-	#was the post id found? 
-	if len(data) is not 0: 
-		conn.commit()
-		#make a dictionary for easy frontend templating
-		for d in data: 
-			dict = {}
-			dict['date'] = d[3]
-			dict['image'] = "../" + d[2]
-			dict['title'] = d[1]
-			dict['html'] = d[4]
-			dict['switch'] = d[5]
-			dict['id'] = d[0]
+	#Does post exist? 
+	try: 
+		post = getPostFromDB(cursor, conn, id)
+		post = post[0]
 
 		#If POST -- update/alter database with new info
 		if form.validate_on_submit(): 
@@ -146,122 +90,56 @@ def editPost(id, name=None):
 
 			#edit blog post in database 
 			try: 
-				cursor.execute("UPDATE post SET title = %s, image = %s, date = %s, html = %s, isProject = %s where post.id = %s ", 
-					(title, main_image, date, html, isProject, id))
-				conn.commit()
+				editPostInDB(cursor, title, main_image, date, html, isProject, id, conn)
 			except Exception as e: 
-				print("Problem inserting: " + str(e))
-				return None 
+				print("Problem updating post." + e)
+				error = "Error occurred."
+				return render_template('error.html', error=error)
 
 			#delete previous tag entries
-			cursor.callproc('deletePostTags', [id]) #get post from id 
-			res = cursor.fetchall()
-			print(res)
+			try: 
+				cursor.callproc('deletePostTags', [id]) #get post from id 
+			except Exception as e: 
+				error = "Error occurred."
+				print("Exception thrown while deleting post-tag reference. PostID: " + id + e)
+				return render_template('error.html', error=error)
 
-			#add as new tag entries 
-			cursor.callproc('getAllTags')
-			data = cursor.fetchall()
-			if len(data) is not 0: 
-				conn.commit()
+			#add as new tag entries
+			try:  
+				createTagReferences(cursor, id, request, conn)
+			except Exception as e: 
+				print("Problem inserting into tag/post table: " + str(e))
+				error = "Error occurred."
+				return render_template('error.html', error=error)
 
-				#make a dictionary for easy frontend templating
-				dd = []
-				for d in data: 
-					dict = {}
-					dict['name'] = d[1]
-					dd.append(dict)
-
-			#get tags 
-			tags = []
-			dict = request.form.to_dict()
-			for d in data: 
-				try: 
-					dict[d[1]]
-					tag = [d[1], d[0]]
-					tags.append(tag)
-				except KeyError as e: 
-					#Key doesn't exist
-					print("Tag key doesn't exist.")
-
-			postid = id 
-			for t in tags: 
-				try: 
-					cursor.execute("INSERT INTO postToTags(postid, tagid) VALUES(%s, %s)",
-						(postid, t[1]))
-					conn.commit()
-				except Exception as e: 
-					print("Problem inserting into tag/post table: " + str(e))
-					return None 
-
-			#get the new tags 
+			#get the newly created tags 
 			newTags = request.form.getlist('newTag[]')
-
 			#add new tags to database 
-			for t in newTags: 
-				try: 
-					cursor.execute("INSERT INTO tags(name) VALUES(%s)",
-						(t))
-					conn.commit()
-					tagid = cursor.lastrowid 
-					#add tag reference to post id in database 
-					try: 
-						cursor.execute("INSERT INTO postToTags(postid, tagid) VALUES(%s, %s)",
-							(postid, tagid))
-						conn.commit()
-					except Exception as e: 
-						print("Problem inserting new tags into tag/post table: " + str(e))
-						return None 
-				except Exception as e: 
-					print("Problem inserting into tag/post table: " + str(e))
-					return None 
-
+			try: 
+				addNewTags(cursor, newTags, id, conn)
+			except Exception as e: 
+				print("Problem creating new tags." + e)
+				error = "Error occurred."
+				return render_template('error.html', error=error)
+			
 			return redirect(url_for('posts'))
 		else: 
 			#get all tags associated with this post 
-			cursor.callproc('getPostTags', [id])
-			postTags = cursor.fetchall()
-
-			pp = []
-			for p in postTags: 
-				pp.append(p[0])
-			postTags = pp 
-
-			#get all tags 
-			cursor.callproc('getAllTags')
-			tagNames = cursor.fetchall()
-			if len(tagNames) is not 0: 
-				conn.commit()
-
-				#make a dictionary for easy frontend templating
-				tt = []
-				for t in tagNames: 
-					dic = {}
-					dic['name'] = t[1]
-					tt.append(dic)
-
-			return render_template('editPost.html', name=name, data=dict, form=form, tags=postTags, allTags=tt)
-			
-	else:
-		return "No data"
+			postTags = getPostTags(cursor, id)
+			#get all tags
+			allTags = getAllTags(cursor, conn)
+			return render_template('editPost.html', name=name, data=post, form=form, tags=postTags, allTags=allTags)
+	except Exception as e:
+		print(e)
+		error = "Error occurred. Post doesn't exist."
+		return render_template('error.html', error=error)
 
 #POST requests 
-app.config['SECRET_KEY'] = 'a really long secret key'
 @app.route("/post", methods=["GET", "POST"])
 def post(name=None):
 	form = PostForm()
 
-	#call Python Procedure - GET all projects
-	cursor.callproc('getAllTags')
-	data = cursor.fetchall()
-	if len(data) is not 0: 
-		conn.commit()
-
-		#make a dictionary for easy frontend templating
-		dd = []
-		for d in data: 
-			dict = {}
-			dict['name'] = d[1]
-			dd.append(dict)
+	allTags = getAllTags(cursor, conn)
 
 	if form.validate_on_submit(): 
 		#title 
@@ -283,7 +161,6 @@ def post(name=None):
 			main_image = 'static/images/placeholder.png'
 
 		#is it a project - switch 
-		print(form.isProject)
 		isProject = form.isProject.data 
 
 		#html body
@@ -300,18 +177,6 @@ def post(name=None):
 		#update image src changes
 		html = str(soup)
 
-		#get tags 
-		tags = []
-		dict = request.form.to_dict()
-		for d in data: 
-			try: 
-				dict[d[1]]
-				tag = [d[1], d[0]]
-				tags.append(tag)
-			except KeyError as e: 
-				#Key doesn't exist
-				print("Tag key doesn't exist.")
-
 		#add blog post to database 
 		try: 
 			cursor.execute("INSERT INTO post(title, image, date, html, isProject) VALUES (%s, %s, %s, %s, %s)", 
@@ -323,17 +188,10 @@ def post(name=None):
 
 		#get the post id 
 		postid = cursor.lastrowid 
-		for t in tags: 
-			try: 
-				cursor.execute("INSERT INTO postToTags(postid, tagid) VALUES(%s, %s)",
-					(postid, t[1]))
-				conn.commit()
-			except Exception as e: 
-				print("Problem inserting into tag/post table: " + str(e))
-				return None 
+		createTagReferences(cursor, postid, request, conn)
 
 	print(form.errors)
-	return render_template('postForm.html', title='Post', data=dd, form=form)
+	return render_template('postForm.html', title='Post', data=allTags, form=form)
 
 
 from flask import send_from_directory

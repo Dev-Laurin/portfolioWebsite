@@ -7,6 +7,7 @@ from globals import images, text, documents, ALLOWED_EXTENSIONS
 
 #Flask config
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'a really long secret key'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['UPLOAD_FOLDER'] = "static/uploads/"
 
