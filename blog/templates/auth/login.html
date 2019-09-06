@@ -1,0 +1,435 @@
+{% extends "layout.html" %}
+
+{% block main %} 
+<div> 
+    <div class="row"> 
+      <div class="col s4">
+        <img class="responsive-img z-depth-3" src="../static/images/laurin_boston.jpg">
+        <h3>Education</h3>
+        <div class="row">
+          <div class="col s12">
+            <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
+                <span class="card-title">MS/BS Computer Science</span>
+                <p>University of Alaska Fairbanks</p>
+                <p>Fall 2013 - Fall 2018</p>
+                <p>Grad GPA 3.93</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
+                <span class="card-title">High School Diploma</span>
+                <p>Hutchison High School</p>
+                <p>Spring 2013</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s8"> 
+        Laurin (Lah-Ren): A detail-oriented, experience-hungry, positive software developer with many interests. 
+        <br><br> 
+        <i>from the Laurin-ary Copyright 2019. All rights reserved.</i>
+        <div class="divider"></div>
+        
+        <h3> Skills </h3>
+        <div class="col m6"> 
+          <h4> Frontend </h4>
+          <div class="divider"></div>
+          <h5>"Languages"</h5>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="80" style="width: 163px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#e80a89, #000)">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="Working on wrapping my head around functional programming (currying) and javascript classes.">Javascript</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="95" style="width: 163px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#4CAF50, #006400)">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="Still need to learn some new HTML5 speciality tags and attributes.">HTML</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="60" style="width: 163px; height: 30px;" data-preset="stripe">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="Have concepts down, but still lose battles.">CSS</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="ldBar label-center" data-value="40" style="width: 163px; height: 30px;" data-preset="stripe" data-fill="data:ldbar/res,stripe(#ffff00, #cccc00)">
+            </div>
+            <div style="margin-left: 5px;" >
+              <a class="modal-trigger" href="#gasModal">Google App Script</a>
+            </div> 
+          </div>
+
+          <h5> Frameworks </h5>
+          <div class="row"> 
+            <div class="col s6">
+              <div class="flex-parent"> 
+                <div class="flex-item-left ldBar label-center loading-images" data-value="75" data-type="fill" data-path="m 158.30303,967.54875 c 0,39.59355 -33.77827,71.69045 -75.445863,71.69045 -41.667606,0 -75.4458706,-32.0969 -75.4458706,-71.69045 0,-39.59355 75.4458706,-134.41959 75.4458706,-134.41959 0,0 75.445863,94.82605 75.445863,134.41959 z" data-fill="data:ldbar/res,bubble(#30badc,#fff,20,1)" >
+                </div>
+                <div>
+                  <a class="modal-trigger" href="#drupalModal">Drupal 8</a>
+                </div>
+              </div>
+            </div> 
+            <div class="col s6">          
+              <div class="flex-parent"> 
+                <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/jquery.svg" data-value="50" data-img-size="50,50" ></div>
+                <div>jQuery</div>
+              </div> 
+            </div> 
+          </div> 
+          <div class="row">
+            <div class="col s6"> 
+              <div class="flex-parent"> 
+                <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/sass.svg" data-value="50" data-img-size="50,50" ></div>
+                <div>SASS</div>
+              </div>
+            </div> 
+            <div class="col s6"> 
+              <div class="flex-parent"> 
+                <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/flask.svg" data-value="20" data-img-size="50,50" ></div>
+                <div>Flask</div>
+              </div>
+            </div> 
+          </div> 
+
+          <div class="row"> 
+            <div class="col s6"> 
+              <div class="flex-parent"> 
+                <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/bootstrap.svg" data-value="80" data-img-size="50,50" ></div>
+                <div>Bootstrap</div>
+              </div>
+            </div> 
+            <div class="col s6">  
+              <div class="flex-parent"> 
+                <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/materialize.svg" data-value="80" data-img-size="50,50" ></div>
+                <div>Materialize CSS</div>
+              </div>
+            </div> 
+          </div> 
+
+          <h5>Templating</h5>
+          Twig
+          Jinja2
+          Angular
+        </div>
+
+        <div class="col m6"> 
+          <h4> Backend </h4>
+          <div class="divider"></div>
+          <h5> Languages </h5>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="90" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="My degree program taught us C++, and I've used it the most.">C++</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="70" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="Similar to C++, but I haven't used it as extensively.">C</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="60" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="Feel I've got the basics down, but I still have to look up how to do things.">Python</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="40" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="NodeJS is small and fast, but I'm not super proficient in it.">NodeJS</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="70" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="tooltipped" data-position="bottom" data-tooltip="Similar to C++ in its object-oriented way, but I don't remember the names/syntax of all the day-to-day functions.">Java</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="60" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="modal-trigger" href="#swiftModal">Swift / iOS app development</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="80" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="modal-trigger" href="#vbaModal">VBA</a>
+            </div> 
+          </div>
+          <div class="flex-parent">
+            <div class="flex-item-left ldBar label-center" data-value="20" style="width: 120px; height: 30px;" data-preset="energy" data-stroke="#ffff00">
+            </div>
+            <div>
+              <a class="modal-trigger" href="#phpModal">PHP</a>
+            </div> 
+          </div>
+        </div>  
+        <h5> Databases </h5>
+        <div class="flex-parent"> 
+          <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/mysql.svg" data-value="50" data-img-size="75,75" ></div>
+          <div>MySQL</div>
+        </div> 
+        <div class="flex-parent"> 
+          <div class="flex-item-left ldBar label-center" data-type="fill" data-img="../static/images/mongodb.svg" data-value="20" data-img-size="75,75" ></div>
+          <div>MongoDB</div>
+        </div> 
+      </div>
+    </div>  
+
+    <div class="row">
+      <div class="col s12 l6">
+        <h3>Work History</h3> 
+        <div id="content">
+          <ul class="timeline">
+            <li class="event">
+              <div class="date"> 9 Months </div> 
+              <h3>Software Developer</h3>
+              <p>Temporary Employee</p>
+              <ol>
+                <li>Building and maintaining Drupal websites</li> 
+                <li>Programming custom Google web app solutions</li>
+              </ol>
+            </li>
+
+            <li class="event">
+              <div class="date"> 10 months </div>
+              <h3>iOS App Developer</h3>
+              <p>Graduate Fellowship for the GI at UAF</p>
+              <ol>
+                <li>Sole developer working remotely</li> 
+                <li>Responsible for producing, documenting, testing and releasing working iOS App from scratch</li>
+                <li>Meeting with stakeholder regularly for updates and feedback through usability testing</li>
+              </ol>  
+            </li>
+            <li class="event">
+              <div class="date">1 year & 5 months</div>
+              <h3>Computer Science Teaching Assistant</h3>
+              <p>Graduate Teaching Assistant at UAF</p>
+              <ol>
+                <li>Work through computer science students' questions</li> 
+                <li>Grade programming homework</li>
+                <li>Monitor computer lab</li>
+              </ol>    
+            </li>
+            <li class="event">
+              <div class="date">9 months</div>
+              <h3>Research Assistant</h3>
+              <p>UAF ITEST Grant</p>
+              <ol>
+                <li>Researching Middle School student's interest/disinterest in learning Robotics (STEM)</li> 
+                <li>Recording observations and making judgements</li>
+                <li>Creating/preparing robots for students to use with <a href="https://www.robotmoose.com">robotmoose.com</a></li>
+              </ol>  
+            </li>
+            <li class="event">
+              <div class="date">3 years & 1 month</div>
+              <h3>Accounting Assistant/Programmer</h3>
+              <p>Wright Air Service Accounting Office</p>
+              <ol>
+                <li>Independently programmed a new workplace timeclock</li> 
+                <li>Checking, counting, and correcting monetary figures</li>
+              </ol>  
+            </li>
+          </ul>
+        </div>
+      </div> 
+      <div class="col s12 l6">
+        <h3>Projects</h3> 
+        <div class="row">
+          <div class="col s12 m7">
+            <div class="card">
+              <div class="card-image">
+                <img src="../static/images/portfolioImages/winterberry_map.png">
+                <span class="card-title"></span>
+              </div>
+              <div class="card-content">
+                <p>Winterberry - Citizen Science Data Tracking</p>
+              </div>
+              <div class="card-action">
+                <a class="modal-trigger" href="#gasModal">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="row">
+          <div class="col s12 m7">
+            <div class="card">
+              <div class="card-image">
+                <img src="../static/images/portfolioImages/IMG-3515.PNG">
+                <span class="card-title"></span>
+              </div>
+              <div class="card-content">
+                <p>iOS Permafrost App</p>
+              </div>
+              <div class="card-action">
+                <a class="modal-trigger" href="#swiftModal">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 m7">
+            <div class="card">
+              <div class="card-image">
+                <img src="../static/images/portfolioImages/geophysical.png">
+                <span class="card-title"></span>
+              </div>
+              <div class="card-content">
+                <p>Geophysical Institute Website - Drupal</p>
+              </div>
+              <div class="card-action">
+                <a class="modal-trigger" href="#drupalModal">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 m7">
+            <div class="card">
+              <div class="card-content">
+                <p>Programmed Workplace Timeclock - VBA</p>
+              </div>
+              <div class="card-action">
+                <a class="modal-trigger" href="#vbaModal">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+    </div> 
+    <div class="row">
+      <div class="col s12">
+        <h3>Core Interests</h3>
+        <p> Robotics </p>
+        <p> 3D Printing</p>
+        <p> Creating Websites </p>
+        <p> Videogames used for teaching</p>
+        <p> Autonomy </p>
+        <p> Speech Recognition, Synthesis, and Text-to-Speech </p>
+        <p> Personal Assistants </p>
+        <p> VR and AR </p>
+      </div> 
+
+    </div>
+
+      </div>
+
+
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block modals %}
+  <!-- Modals --> 
+  <!-- Drupal Modal -->
+  <div id="drupalModal" class="modal">
+    <div class="modal-content">
+      <h4>Drupal 8 Proficiency</h4>
+      <p>I've made small custom modules, worked with twig templates, and have experience managing content through Drupal's interfaces.</p>
+      <p><b>Projects</b>
+        <div class="collection">
+          <a class="collection-item disabled-link-text" href="#">WATC - Coming Soon</a>
+          <a class="collection-item" href="https://www.gi.alaska.edu/">Geophysical Institute, University of Alaska Fairbanks</a>
+
+        </div>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+  <!-- Google app script modal --> 
+  <div id="gasModal" class="modal">
+    <div class="modal-content">
+      <h4>Google App Script Proficiency</h4>
+      <p>Learning GAS along the way, I learned how to manipulate Google API's, setup a server-client relationship, and create a database out of Google spreadsheets.</p>
+      <p>For the project 'Winterberry', I created input forms to connect to the Google spreadsheet backend and save the data there for the scientists to use and publish for research.</p>
+      <p><b>Winterberry Project Forms</b>
+        <div class="collection">
+          <a class="collection-item" href="https://sites.google.com/alaska.edu/winterberry/view-the-data">Viewing the Data</a>
+          <a class="collection-item" href="https://sites.google.com/alaska.edu/winterberry/enter-your-data/data-observation-form">Data Entry Form</a>
+          <a class="collection-item" href="https://sites.google.com/alaska.edu/winterberry/enter-your-data/site-description-form">Site Creation Form</a>
+          <a class="collection-item" href="https://sites.google.com/alaska.edu/winterberry/enter-your-data/berry-density-form">Berry Density Form</a>
+        </div>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <!-- Swift/iOS modal --> 
+  <div id="swiftModal" class="modal">
+    <div class="modal-content">
+      <div> 
+        <h4>Swift/iOS App Proficiency</h4>
+        <p>Having worked on 3 different iOS apps, but having pushed 1 to the app store, I would rate my App proficiency at 60%. There is a lot of room for improvement and a great in-depth learning opportunity of Apple's frameworks, functions, and device capabilities.</p>
+        <p>Under a researcher at the Geophysical Institute of Alaska Fairbanks, I've created an app currently named 'PermafrostPredictor' on the App Store.</p>
+      </div>
+      <div class="carousel carousel-slider center">
+        <a class="carousel-item" style="width: 50%;" ><img src="../static/images/portfolioImages/IMG-3514.PNG"></a>
+        <a class="carousel-item " style="width: 50%;"><img src="../static/images/portfolioImages/IMG-3515.PNG"></a>
+        <a class="carousel-item" style="width: 50%;"><img src="../static/images/portfolioImages/IMG-3516.PNG"></a>
+        <a class="carousel-item " style="width: 50%;"><img src="../static/images/portfolioImages/IMG-3517.PNG"></a>
+        <a class="carousel-item " style="width: 50%;"><img src="../static/images/portfolioImages/IMG-3518.PNG"></a>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <!-- VBA modal --> 
+  <div id="vbaModal" class="modal">
+    <div class="modal-content">
+      <div> 
+        <h4>VBA Proficiency</h4>
+        <p>Early in my college career as a programmer, I worked at Wrights and was given permission to program
+         a timeclock for the entire workplace. Having made a version in Excel and Access, the workplace was able to use my timeclock for free, no longer using a punch card machine. </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <!-- PHP modal --> 
+  <div id="phpModal" class="modal">
+    <div class="modal-content">
+      <div> 
+        <h4>PHP Proficiency</h4>
+        <p>For a security course in college, I created a small library database using a LAMP stack. I presented on the security risks of using PHP and MySQL without programming with security in mind, and just how easy it would be for a malicious user to take advantage.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+{% endblock %}
