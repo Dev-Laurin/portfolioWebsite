@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from blog.db import get_db
+from blog.database import get_db
 from datetime import datetime 
 
 db = get_db()
@@ -29,7 +29,7 @@ class Post(db.Model):
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(50), nullable=False)
-	# password_hash = db.Column(db.String(30), nullable=False)
+	password_hash = db.Column(db.String(128), nullable=False)
 
 	def set_password(self, password):
 		self.password_hash = generate_password_hash(password)

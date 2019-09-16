@@ -4,16 +4,19 @@
   <div class="container">
     <div class="row">
       <div class="col s12">
-      <button class="right btn waves-effect waves-light" name="action" onclick="location.href='/editPost/{{data[0].id}}'">edit</button> 
-      <h1> {{data[0].title}}</h1>
-      <img src="{{data[0].image}}" style="width: 100%;"> 
-      <p> {{data[0].date}}</p> 
-      <p> {{data[0].html|safe}}</p> 
+      <button class="right btn waves-effect waves-light" name="action" onclick="location.href='/editPost/{{data.id}}'">edit</button> 
+      <h1> {{data.title}}</h1>
+      <img src="/{{data.image}}" style="width: 100%;"> 
+      <p>Date Posted: {{data.posted_date}}</p> 
+      {% if data.revised_date %} 
+        <p>Date Revised: {{data.revised_date}} </p> 
+      {% endif %} 
+      <p> {{data.html|safe}}</p> 
       <!-- Taxonomy terms, comments --> 
       {% set index = namespace(foo=0) %}
       {% for i in range(tags|length) %}
         <div class="chip">
-        {{tags[index.foo]}}
+        {{tags[index.foo].name}}
         </div>
         {% set index.foo = index.foo + 1 %}
       {% endfor %}

@@ -157,13 +157,14 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     //set switch value 
-    value = {{data.switch}};
+    value = {{data.is_project}};
     document.getElementById('isProject').checked = value; 
 
     //Set checkbox values 
     var checkboxes = document.getElementsByTagName("input"); 
 
     tags = {{tags|safe}}; 
+    console.log(tags)
     for(var i=0; i<tags.length; i++){
       document.getElementById(tags[i]).checked = true; 
     }

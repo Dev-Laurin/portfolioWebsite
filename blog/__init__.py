@@ -7,6 +7,8 @@ from flask_login import LoginManager
 login_manager = LoginManager()
 
 import os 
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 def create_app(test_config=None):
     # create and configure the app
@@ -36,15 +38,13 @@ def create_app(test_config=None):
     login_manager.init_app(app)
     login_manager.session_protection = "strong"
 
-
-
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-    from . import db 
+    from . import database 
     with app.app_context():
         db.init_app(app)
 

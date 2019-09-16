@@ -2,11 +2,11 @@ from flask_sqlalchemy import SQLAlchemy
 import click  
 from flask import current_app, g
 from flask.cli import with_appcontext
+from blog import db 
 
 def get_db(): 
-	if 'db' not in g:
-		g.db = SQLAlchemy(current_app)
-	return g.db 
+	with current_app.app_context(): 
+		return db 
 
 def close_db(e=None):
 	db = g.pop('db', None)
