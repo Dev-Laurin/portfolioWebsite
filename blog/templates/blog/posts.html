@@ -17,9 +17,9 @@
           </a>
           <div class="card-content">
             <span class="card-title">{{ data[index.foo].title }}</span>
-            <p>{{data[index.foo].posted_date}}</p> 
+            <p>{{data[index.foo].posted_date.strftime('%b-%d-%Y')}}</p> 
             {% if data[index.foo].revised_date %}
-              <p><i>Revised: {{data[index.foo].revised_date}}</i></p> 
+              <p><i>Revised: {{data[index.foo].revised_date.strftime('%b-%d-%Y')}}</i></p> 
             {% endif %}
           </div>
           <div class="card-action">

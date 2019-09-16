@@ -7,9 +7,9 @@
       <button class="right btn waves-effect waves-light" name="action" onclick="location.href='/editPost/{{data.id}}'">edit</button> 
       <h1> {{data.title}}</h1>
       <img src="/{{data.image}}" style="width: 100%;"> 
-      <p>Date Posted: {{data.posted_date}}</p> 
+      <p>Date Posted: {{data.posted_date.strftime('%b-%d-%Y')}}</p> 
       {% if data.revised_date %} 
-        <p>Date Revised: {{data.revised_date}} </p> 
+        <p>Date Revised: {{data.revised_date.strftime('%b-%d-%Y')}} </p> 
       {% endif %} 
       <p> {{data.html|safe}}</p> 
       <!-- Taxonomy terms, comments --> 

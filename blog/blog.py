@@ -50,7 +50,7 @@ def editPost(id, name=None):
       title = form.title.data 
 
       #original date
-      date = post.date  
+      date = form.date.data 
       date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
 
       #main image
