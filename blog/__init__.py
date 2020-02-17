@@ -2,13 +2,12 @@ from flask import (
     Flask, url_for, render_template, json, request, 
     redirect
 )
-from flask_login import LoginManager
-
-login_manager = LoginManager()
-
+from flask_file_upload import FileUpload 
+from flask_user import UserManager, roles_required, current_user
 import os 
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
+file_upload = FileUpload(db=db)
 
 def create_app(test_config=None):
     # create and configure the app
@@ -17,26 +16,9 @@ def create_app(test_config=None):
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
-        #uploads
-        from flask_uploads import (UploadSet, 
-            configure_uploads, IMAGES, TEXT, 
-            DOCUMENTS, patch_request_class
-        )
-
-        images = UploadSet('images', IMAGES)
-        text = UploadSet('text', TEXT)
-        documents = UploadSet('documents', DOCUMENTS)
-        configure_uploads(app, (images, text, documents))
-        patch_request_class(app, 50 * 1024 * 1024) #50 MB max file upload
-
-        ALLOWED_EXTENSIONS = images
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
-
-    #for handling authentication 
-    login_manager.init_app(app)
-    login_manager.session_protection = "strong"
 
     # ensure the instance folder exists
     try:
@@ -47,14 +29,43 @@ def create_app(test_config=None):
     from . import database 
     with app.app_context():
         db.init_app(app)
+        
+        from blog import blog 
+         #uploads
+        file_upload.init_app(app)   
+        user_manager = UserManager(app, db, schema.User)
 
-        from blog import blog
-        from blog import auth 
+        #uploads
+        from flask_uploads import (UploadSet, 
+            configure_uploads, IMAGES, 
+            DOCUMENTS, patch_request_class
+        )
 
-    app.register_blueprint(auth.bp)
+        images = UploadSet('images', IMAGES)
+        documents = UploadSet('documents', DOCUMENTS)
+        configure_uploads(app, (images, documents))
+        patch_request_class(app, 50 * 1024 * 1024) #50 MB max file upload
+
+        ALLOWED_EXTENSIONS = images
+      #  dev_db(user_manager)
+
     app.register_blueprint(blog.bp)
 
     app.add_url_rule("/", endpoint='index')
 
     return app 
+
+def dev_db(user_manager):
+    from .schema import Role, User 
+    db.drop_all()
+    db.create_all()
+
+    #Roles 
+    editor = Role(name='Editor')
+    #users
+    user = User(username="laurin", 
+        password=user_manager.hash_password("herewegotesting44"))
+    user.roles.append(editor)
+    db.session.add(user)
+    db.session.commit()
 

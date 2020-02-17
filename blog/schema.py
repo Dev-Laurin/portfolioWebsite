@@ -1,8 +1,10 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from blog.database import get_db
 from datetime import datetime 
+from flask_user import UserMixin
 
 db = get_db()
+from . import file_upload
 
 #Many to Many 
 tags = db.Table('tags',
@@ -10,11 +12,13 @@ tags = db.Table('tags',
 	db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
 ) 
 
+@file_upload.Model
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100), nullable=False)
 	html = db.Column(db.Text, nullable=False)
-	image = db.Column(db.String(200))
+	image = file_upload.Column(db)
+	image_alt = db.Column(db.String(100))
 	posted_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	revised_date = db.Column(db.DateTime)
 	is_project = db.Column(db.Integer)
@@ -26,19 +30,39 @@ class Post(db.Model):
 	def __repr__(self):
 		return '<Post %r>' % self.title 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
+	def __str__(self):
+		return self.username 
+
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(50), nullable=False)
-	password_hash = db.Column(db.String(128), nullable=False)
+	active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
+
+	username = db.Column(db.String(120), unique=True, nullable=False)
+	password = db.Column(db.String(200), primary_key=False,
+		unique=False, nullable=False)
 
 	def set_password(self, password):
-		self.password_hash = generate_password_hash(password)
+		self.password = generate_password_hash(password, 
+			method='sha256')
 
 	def check_password(self, password):
-		return check_password_hash(self.password_hash, password)
+		return check_password_hash(self.password, password)
 
-	def __repr__(self):
-		return '<User %r' % self.username 
+	roles = db.relationship('Role', secondary='user_roles')
+
+class Role(db.Model):
+	def __str__(self):
+		return self.name 
+		
+	__tablename__ = 'role'
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(50), unique=True)
+
+class UserRoles(db.Model):
+	__tablename__ = 'user_roles'
+	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+	role_id = db.Column(db.Integer, db.ForeignKey('role.id', ondelete='CASCADE'))
 
 class Tag(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

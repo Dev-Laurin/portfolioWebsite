@@ -1,27 +1,26 @@
 from flask import ( 
     Flask, url_for, render_template, json, request, redirect, Blueprint, flash, g
 )
-from werkzeug.utils import secure_filename
 from werkzeug.exceptions import abort 
 from datetime import datetime
 from blog.forms import PostForm #flask forms 
 from bs4 import BeautifulSoup as bs #HTML Parsing
-import uuid #Filename random generator
-import base64 #base64 image decoding 
-import re #substring search 
-import os 
 from flask_sqlalchemy import SQLAlchemy 
 from flask import current_app, g
 
-from blog.auth import login_required
 from blog.schema import User, Post, Tag
 from blog.database import get_db 
+from flask_user import current_user, login_required, roles_required
+from . import file_upload
+from .uploadFunctions import upload_image  
 
 bp = Blueprint("blog", __name__)
 
 @bp.route("/", methods=["GET"])
 def index(name=None): 
     posts = Post.query.all()
+    for post in posts: 
+      post.image = file_upload.get_file_url(post, filename="image") 
     return render_template('blog/posts.html', name=name, data=posts)
 
 @bp.route("/post/<id>", methods=["GET"])
@@ -30,14 +29,15 @@ def getPost(id, name=None):
       post = Post.query.get(id)
       #get all tags associated with this post 
       tags = Tag.query.filter(Tag.posts.any(id=id)).all()
+      post.image = file_upload.get_file_url(post, filename="image")
       return render_template('blog/view_post.html', name=name, data=post, tags=tags)
   except Exception as e: 
       error = "Could not get post or post tags from database."
-      print(e) 
+      current_app.logger.error(e) 
       return render_template('error.html', error=error)
 
-@login_required
 @bp.route("/editPost/<id>", methods=["GET", "POST"])
+@roles_required(['Editor'])
 def editPost(id, name=None):
   form = PostForm()
 
@@ -53,17 +53,6 @@ def editPost(id, name=None):
       date = form.date.data 
       date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
 
-      #main image
-      if 'file' in request.files and request.files['file'].filename!="":  
-          main_image = request.files['file'] 
-          main_image.save(os.path.join(
-              current_app.config['UPLOADED_IMAGES_DEST'], 
-              secure_filename(main_image.filename)
-          ))
-          main_image = current_app.config['UPLOADED_IMAGES_DEST'] + secure_filename(main_image.filename)
-      else: 
-          main_image = post.image; 
-
       #is it a project - switch 
       isProject = form.isProject.data 
 
@@ -78,6 +67,7 @@ def editPost(id, name=None):
       for image in images: 
           if image['src'].find('static') == -1:
               image['src'] = upload_image(image['src'])
+              image['style'] = "width: 100%;"
 
       #update image src changes
       html = str(soup)
@@ -87,16 +77,21 @@ def editPost(id, name=None):
       #edit blog post in database 
       try: 
           post.title = title
-          post.image = main_image
           post.posted_date = date 
           post.revised_date = datetime.now().strftime('%Y-%m-%d')
           post.html = html 
           post.is_project = isProject
+          #main image
+          if 'file' in request.files and request.files['file'].filename!="":  
+            main_image = request.files['file'] 
+            post = file_upload.save_files(post, files={
+            "image": main_image
+            })
           db.session.add(post)
           db.session.commit()
       except Exception as e: 
-          print("Problem updating post.")
-          print(e)
+          current_app.logger.error("Problem updating post.")
+          current_app.logger.error(e)
           error = "Error occurred."
           return render_template('error.html', error=error)
 
@@ -118,11 +113,11 @@ def editPost(id, name=None):
           db.session.commit()
         except KeyError as e: 
           #Key doesn't exist
-          print("Tag: was not selected.")
+          current_app.logger.info("Tag was not selected.")
+          current_app.logger.info(e)
 
       #get the newly created tags 
       newTags = request.form.getlist('newTag[]')
-      print(newTags)
       for t in newTags: 
           #see if tag is already created 
           tag = Tag.query.filter_by(name=t).first()
@@ -133,8 +128,8 @@ def editPost(id, name=None):
                 db.session.add(tag)
                 db.session.commit()
               except Exception as e: 
-                print("Problem updating tags.")
-                print(e)
+                current_app.logger.error("Problem updating tags.")
+                current_app.logger.error(e)
                 error = "Error occurred."
                 return render_template('error.html', error=error)
           else: 
@@ -145,8 +140,8 @@ def editPost(id, name=None):
                 db.session.add(tag)
                 db.session.commit()
               except Exception as e: 
-                print("Problem creating new tags.")
-                print(e)
+                current_app.logger.error("Problem creating new tags.")
+                current_app.logger.error(e)
                 error = "Error occurred."
                 return render_template('error.html', error=error)
       return redirect(url_for('index'))
@@ -157,11 +152,12 @@ def editPost(id, name=None):
         postTags.append(t.name)
       #get all tags
       allTags = Tag.query.all()
+      post.image = file_upload.get_file_url(post, filename="image")
       return render_template('blog/editPost.html', name=name, data=post, form=form, tags=postTags, allTags=allTags)
 
 #POST requests 
-@login_required
 @bp.route("/post", methods=["GET", "POST"])
+@roles_required(['Editor'])
 def post(name=None):
     form = PostForm()
 
@@ -174,17 +170,6 @@ def post(name=None):
         #original date
         date = form.date.data 
         date = datetime.strptime(date, '%b %d, %Y').strftime('%Y-%m-%d')
-
-        #main image
-        if 'file' in request.files and request.files['file'].filename != "":  
-            main_image = request.files['file'] 
-            main_image.save(os.path.join(
-              current_app.config['UPLOADED_IMAGES_DEST'], 
-              secure_filename(main_image.filename)
-            ))
-            main_image = current_app.config['UPLOADED_IMAGES_DEST'] + secure_filename(main_image.filename)
-        else: 
-            main_image = 'static/images/placeholder.png'
 
         #is it a project - switch 
         isProject = form.isProject.data 
@@ -218,14 +203,24 @@ def post(name=None):
         author_id = 1 
         #add blog post to database 
         try: 
-            post = Post(title=title, html=html, image=main_image, posted_date=date, revised_date=None, 
+            post = Post(title=title, html=html, posted_date=date, revised_date=None, 
                 is_project=isProject, author=author_id, tags=tagIds )
+
+            #main image
+            if 'file' in request.files and request.files['file'].filename != "":  
+                main_image = request.files['file'] 
+                post = file_upload.save_files(post, files={
+                  "image": main_image
+                })
+            else: 
+                main_image = 'static/images/placeholder.png'
+                
             db.session.add(post)
             db.session.commit()
         except Exception as e: 
-            print("Problem inserting/creating post into DB: " + str(e))
+            current_app.logger.error("Problem inserting/creating post into DB: " + str(e))
             return render_template('error.html', error="Could not create post.") 
 
-    print(form.errors)
+    current_app.logger.error(form.errors)
     return render_template('blog/postForm.html', title='Post', data=allTags, form=form)
 

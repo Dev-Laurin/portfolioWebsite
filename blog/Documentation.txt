@@ -1,8 +1,0 @@
-//Documentation for the website
-Web Server: Apache2 
-Host: DigitalOcean
-DNS Host: DigitalOcean
-Domain Name purchased from: Google
-Website Monitoring Service: Uptime Robot
-SSL Certification: Certbot
-Firewall: UFW
