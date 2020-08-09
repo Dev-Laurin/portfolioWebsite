@@ -1,6 +1,6 @@
 
 #DB config 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://webdev:shulkAssistant50%@localhost/site'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://web:N6^rp4C9X1CAO$&8Hvih^up*P5@localhost/website'
 SQLALCHEMY_TRACK_MODIFICATIONS = False 
 SQLALCHEMY_ECHO = False
 

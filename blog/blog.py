@@ -67,7 +67,8 @@ def editPost(id, name=None):
       for image in images: 
           if image['src'].find('static') == -1:
               image['src'] = upload_image(image['src'])
-              image['style'] = "width: 100%;"
+              image['class'] = "center"
+              image['onError'] = "this.onerror=null;this.src='/static/vw_image_placeholder.png';this.width='150';this.height='150';"
 
       #update image src changes
       html = str(soup)
@@ -184,6 +185,8 @@ def post(name=None):
         #upload images 
         for image in images: 
             image['src'] = upload_image(image['src'])
+            image['class'] = "center"
+            image['onError'] = "this.onerror=null;this.src='/static/vw_image_placeholder.png';this.width='150';this.height='150';"
 
         #update image src changes
         html = str(soup)
@@ -224,3 +227,17 @@ def post(name=None):
     current_app.logger.error(form.errors)
     return render_template('blog/postForm.html', title='Post', data=allTags, form=form)
 
+#Delete Post
+@bp.route("/deletePost/<id>", methods=["POST"])
+@roles_required(['Editor'])
+def deletePost(id, name=None):
+  try: 
+    db = get_db()
+    post = Post.query.get(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/')
+  except Exception as e: 
+    error = "Could not delete post."
+    current_app.logger.error(e) 
+    return render_template('error.html', error=error)

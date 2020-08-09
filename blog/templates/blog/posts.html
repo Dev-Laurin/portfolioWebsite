@@ -12,7 +12,7 @@
         <div class="card">
           <a href="/post/{{data[index.foo].id}}">
           <div class="card-image">
-            <img src={{data[index.foo].image}}>
+              <img src={{data[index.foo].image}} onError="this.onerror=null;this.src='/static/vw_image_placeholder.png';">
           </div>
           </a>
           <div class="card-content">
@@ -23,7 +23,14 @@
             {% endif %}
           </div>
           <div class="card-action">
+            <div class="inline">
             <a class="modal-trigger" href="/post/{{data[index.foo].id}}">Read More</a>
+            {% if current_user.is_authenticated %}
+              <form action="/deletePost/{{data[index.foo].id}}" style="display: inline;" method="post">
+                <input type="submit" value="Delete" class="red btn-small" href="/deletePost">
+              </form>
+            {% endif %}
+            </div>
           </div>
         </div>
       </div> 
