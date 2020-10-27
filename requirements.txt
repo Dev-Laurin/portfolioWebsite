@@ -9,7 +9,7 @@ cffi==1.13.2
 chardet==3.0.4
 Click==7.0
 coverage==4.5.4
-cryptography==2.8
+cryptography==3.2
 Flask==1.1.1
 Flask-BabelEx==0.9.3
 flask-file-upload==0.1.0rc4
