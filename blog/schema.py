@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_user import UserMixin
 
 db = get_db()
-from . import file_upload
+from blog import file_upload
 
 #Many to Many 
 tags = db.Table('tags',

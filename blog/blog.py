@@ -11,17 +11,19 @@ from flask import current_app, g
 from blog.schema import User, Post, Tag
 from blog.database import get_db 
 from flask_user import current_user, login_required, roles_required
-from . import file_upload
+from blog import file_upload
 from .uploadFunctions import upload_image  
+from datetime import date 
 
 bp = Blueprint("blog", __name__)
+current_year = date.today().year
 
 @bp.route("/", methods=["GET"])
 def index(name=None): 
     posts = Post.query.all()
     for post in posts: 
       post.image = file_upload.get_file_url(post, filename="image") 
-    return render_template('blog/posts.html', name=name, data=posts)
+    return render_template('blog/posts.html', name=name, data=posts, current_year=current_year)
 
 @bp.route("/post/<id>", methods=["GET"])
 def getPost(id, name=None):
@@ -30,7 +32,7 @@ def getPost(id, name=None):
       #get all tags associated with this post 
       tags = Tag.query.filter(Tag.posts.any(id=id)).all()
       post.image = file_upload.get_file_url(post, filename="image")
-      return render_template('blog/view_post.html', name=name, data=post, tags=tags)
+      return render_template('blog/view_post.html', name=name, data=post, tags=tags, current_year=current_year)
   except Exception as e: 
       error = "Could not get post or post tags from database."
       current_app.logger.error(e) 
@@ -154,7 +156,7 @@ def editPost(id, name=None):
       #get all tags
       allTags = Tag.query.all()
       post.image = file_upload.get_file_url(post, filename="image")
-      return render_template('blog/editPost.html', name=name, data=post, form=form, tags=postTags, allTags=allTags)
+      return render_template('blog/editPost.html', name=name, data=post, form=form, tags=postTags, allTags=allTags, current_year=current_year)
 
 #POST requests 
 @bp.route("/post", methods=["GET", "POST"])
@@ -225,7 +227,7 @@ def post(name=None):
             return render_template('error.html', error="Could not create post.") 
 
     current_app.logger.error(form.errors)
-    return render_template('blog/postForm.html', title='Post', data=allTags, form=form)
+    return render_template('blog/postForm.html', title='Post', data=allTags, form=form, current_year=current_year)
 
 #Delete Post
 @bp.route("/deletePost/<id>", methods=["POST"])

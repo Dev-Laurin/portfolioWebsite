@@ -2,7 +2,7 @@ from flask import (
     Flask, url_for, render_template, json, request, 
     redirect
 )
-from flask_file_upload import FileUpload 
+from flask_file_upload.file_upload import FileUpload 
 from flask_user import UserManager, roles_required, current_user
 import os 
 from flask_sqlalchemy import SQLAlchemy
@@ -29,22 +29,23 @@ def create_app(test_config=None):
     from . import database 
     with app.app_context():
         db.init_app(app)
+        file_upload.init_app(app, db) 
         
-        from blog import blog 
+        from blog import blog
+        from .schema import User
          #uploads
-        file_upload.init_app(app)   
-        user_manager = UserManager(app, db, schema.User)
+          
+        user_manager = UserManager(app, db, User)
 
         #uploads
         from flask_uploads import (UploadSet, 
             configure_uploads, IMAGES, 
-            DOCUMENTS, patch_request_class
+            DOCUMENTS
         )
 
         images = UploadSet('images', IMAGES)
         documents = UploadSet('documents', DOCUMENTS)
         configure_uploads(app, (images, documents))
-        patch_request_class(app, 50 * 1024 * 1024) #50 MB max file upload
 
         ALLOWED_EXTENSIONS = images
       #  dev_db(user_manager)

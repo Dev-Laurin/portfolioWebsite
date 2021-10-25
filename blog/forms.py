@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, Length, InputRequired
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from flask_uploads import (UploadSet, 
 	configure_uploads, IMAGES, TEXT, 
-	DOCUMENTS, patch_request_class
+	DOCUMENTS
 )
 images = UploadSet('images', IMAGES)
 
