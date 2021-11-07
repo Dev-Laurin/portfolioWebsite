@@ -18,6 +18,7 @@ class Post(db.Model):
 	title = db.Column(db.String(100), nullable=False)
 	html = db.Column(db.Text, nullable=False)
 	image = file_upload.Column(db)
+	mobile_image = file_upload.Column(db)
 	image_alt = db.Column(db.String(100))
 	posted_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	revised_date = db.Column(db.DateTime)

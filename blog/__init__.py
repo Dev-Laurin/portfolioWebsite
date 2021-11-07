@@ -6,6 +6,8 @@ from flask_file_upload.file_upload import FileUpload
 from flask_user import UserManager, roles_required, current_user
 import os 
 from flask_sqlalchemy import SQLAlchemy
+#from flask.ext.mobility import Mobility
+
 db = SQLAlchemy()
 file_upload = FileUpload(db=db)
 
@@ -30,6 +32,7 @@ def create_app(test_config=None):
     with app.app_context():
         db.init_app(app)
         file_upload.init_app(app, db) 
+       # Mobility(app)
         
         from blog import blog
         from .schema import User
