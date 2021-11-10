@@ -25,6 +25,8 @@ from blog.updatePost import updatePost
 #Other
 from datetime import date, datetime
 
+from uploadFunctions import create_thumbnail
+
 bp = Blueprint("blog", __name__)
 current_year = date.today().year
 
@@ -106,6 +108,8 @@ def post(name=None):
             image['src'] = upload_image(image['src'])
             image['class'] = "center"
             image['onError'] = "this.onerror=null;this.src='/static/vw_image_placeholder.png';this.width='150';this.height='150';"
+            #Create thumbnail
+            image['thumbnail'] = create_thumbnail(src=image['src'])
 
         #update image src changes
         html = str(soup)
@@ -134,6 +138,8 @@ def post(name=None):
                 post = file_upload.save_files(post, files={
                     "image": main_image
                 })
+                #Create thumbnail for mobile
+                create_thumbnail(infile=main_image)
             else: 
                 main_image = 'static/images/placeholder.png'
                 

@@ -23,3 +23,15 @@ def upload_image(base64String):
 	fh.close()
 	src = os.path.join(current_app.config['UPLOADED_IMAGES_DEST'], secure_filename(filename))
 	return src 
+
+def create_thumbnail(path, filename):
+	size = (128, 128)
+
+	image = Image.open(path)
+	new_image = image.copy()
+	new_image.thumbnail(size)
+	#rename
+	split_name = os.path.splitext(filename)
+	new_filename = split_name[0] + "_thumbnail." + split_name[1]
+	new_filename = os.path.join(current_app.config['UPLOADED_IMAGES_DEST'], secure_filename(new_filename))
+	new_image.save(new_filename)
