@@ -17,7 +17,7 @@ from flask_user import current_user, login_required, roles_required
 
 #Upload files
 from blog import file_upload
-from blog.uploadFunctions import upload_image  
+from blog.uploadFunctions import upload_image, create_thumbnail
 
 #Update posts in database 
 from blog.updatePost import updatePost
@@ -25,7 +25,6 @@ from blog.updatePost import updatePost
 #Other
 from datetime import date, datetime
 
-from uploadFunctions import create_thumbnail
 
 bp = Blueprint("blog", __name__)
 current_year = date.today().year
